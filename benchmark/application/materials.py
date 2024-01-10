@@ -1,9 +1,12 @@
+import sys
+print(sys.executable)
+
 import time
 from gurobipy import GRB, Model
 
 # Example data
 QUALITY_THRESHOLD= 7
-DEMAND = 1
+DEMAND = 1 
 
 material_quality = {'M1': 3, 'M2': 9, 'M3': 6} # 1: low quality, 10: extremely high quality
 material_abandunce = {'M1': 8, 'M2': 3, 'M3': 5} #1: very rare, 10:extremely abandunt
