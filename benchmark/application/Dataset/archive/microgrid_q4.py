@@ -28,7 +28,8 @@ Bch_prev = [0, 0, 0,0] #Power(w) initialize Battery charge level to zero
 Bdis_prev = [0, 0, 0,0] #Power(w) initialize battery discharge leverl to zero
 
 SoEprev = np.array([2800, 3400, 2500, 3200]) #i(Energy ws) initialize SoE to previous timestep values
-
+#Question4: What should be the state of energy of the battery if the community's load consumption is reduced to half?
+Pcons = Pcons/2
 #Bch_prev = [0]*(n+1) #Power(w) initialize Battery charge level to zero
 #Bdis_prev = [0]*(n+1) #Power(w) initialize battery discharge leverl to zero
 
@@ -65,6 +66,8 @@ model.min((PriceImp*Pimp).sum() - (PriceEx * Pexp).sum())
     #model.min(Pimp.sum() + Pexp.sum()) #energy exchange minimization
 
 #Constraints
+
+
 #1. Energy balance constraint
 model.st(((sum(Pprod[t]) - Bch.sum(axis = 1) + Bdis.sum(axis = 1) + Pimp[t] - Pexp[t]) ==  sum(Pcons[t])) for t in range(0,m)) 
 

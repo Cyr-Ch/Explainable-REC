@@ -65,6 +65,8 @@ model.min((PriceImp*Pimp).sum() - (PriceEx * Pexp).sum())
     #model.min(Pimp.sum() + Pexp.sum()) #energy exchange minimization
 
 #Constraints
+# Question2: What would be the profit if the community exports are smaller than this amount of power [10,30,20] to the grid?
+model.st(Pexp<=np.array([10,30,20]))
 #1. Energy balance constraint
 model.st(((sum(Pprod[t]) - Bch.sum(axis = 1) + Bdis.sum(axis = 1) + Pimp[t] - Pexp[t]) ==  sum(Pcons[t])) for t in range(0,m)) 
 

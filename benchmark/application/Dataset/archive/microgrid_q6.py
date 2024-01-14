@@ -65,6 +65,10 @@ model.min((PriceImp*Pimp).sum() - (PriceEx * Pexp).sum())
     #model.min(Pimp.sum() + Pexp.sum()) #energy exchange minimization
 
 #Constraints
+
+#Question6: What should be the community's minimum load to get a cost = 0?
+model.st((PriceImp*Pimp).sum() - (PriceEx * Pexp).sum() == 0)
+
 #1. Energy balance constraint
 model.st(((sum(Pprod[t]) - Bch.sum(axis = 1) + Bdis.sum(axis = 1) + Pimp[t] - Pexp[t]) ==  sum(Pcons[t])) for t in range(0,m)) 
 

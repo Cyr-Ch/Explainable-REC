@@ -65,9 +65,11 @@ model.min((PriceImp*Pimp).sum() - (PriceEx * Pexp).sum())
     #model.min(Pimp.sum() + Pexp.sum()) #energy exchange minimization
 
 #Constraints
+# What would be the profit if the community imports are smaller than this amount of power [10,30,20] from the grid?
+model.st(Pimp<=np.array([10,30,20]))
+
 #1. Energy balance constraint
 model.st(((sum(Pprod[t]) - Bch.sum(axis = 1) + Bdis.sum(axis = 1) + Pimp[t] - Pexp[t]) ==  sum(Pcons[t])) for t in range(0,m)) 
-
 #2. No import and export at the same time constraint
 model.st(Pimp[t] <= (1-b[t]) * UB_x for t in range(0,m))   #constraint (2) x <= (1-b) * UB_x  ,y <= b * UB_y
 model.st(Pexp[t] <= b[t] * UB_y for t in range(0,m) )

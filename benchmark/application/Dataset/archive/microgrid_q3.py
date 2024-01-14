@@ -65,6 +65,9 @@ model.min((PriceImp*Pimp).sum() - (PriceEx * Pexp).sum())
     #model.min(Pimp.sum() + Pexp.sum()) #energy exchange minimization
 
 #Constraints
+# Question3: At the timestep 2 if the community's load doubles, what would be the profit?
+for load in range(len(Pcons[2])):
+	Pcons[2][load] = 2*Pcons[2][load]
 #1. Energy balance constraint
 model.st(((sum(Pprod[t]) - Bch.sum(axis = 1) + Bdis.sum(axis = 1) + Pimp[t] - Pexp[t]) ==  sum(Pcons[t])) for t in range(0,m)) 
 

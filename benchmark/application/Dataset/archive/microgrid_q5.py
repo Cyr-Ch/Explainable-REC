@@ -58,6 +58,9 @@ b = model.dvar(m, 'B')  #binary variable
 c = model.dvar((m,n), 'B') #binary variable
 SoEnext = model.dvar((m,n)) #State of Energy of the battery in the next time timeslot
 
+#Question6: If the community's load is in this limit, how much I get profit?
+Pcons = Pcons*3
+
 #define the two objective functions/startegies
 #if obj_fct == 'min_cost': #cost minimization strategy/profit maximization 
 model.min((PriceImp*Pimp).sum() - (PriceEx * Pexp).sum())
