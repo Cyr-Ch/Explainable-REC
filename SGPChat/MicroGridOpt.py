@@ -63,7 +63,7 @@ CONSTRAINT_CODE_STR = "# OPTIGUIDE CONSTRAINT CODE GOES HERE"
 
 
 # %%
-class UnbiasedCathodeAgent(AssistantAgent):
+class MicroGridOptAgent(AssistantAgent):
     """(Experimental) UnbiasedCathode is an agent to answer
     users questions for supply chain-related coding project.
 
