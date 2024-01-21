@@ -48,6 +48,9 @@ UB_y = 10000000 #maximum export
 
 #create a model object
 model = ro.Model('model')
+
+# OPTIGUIDE DATA CODE GOES HERE
+# Create variables
 #decision variables
 Pimp = model.dvar(m) #Imported Power                
 Pexp = model.dvar(m)    #Exported Power
@@ -93,6 +96,8 @@ model.st(Bdis <= Kdis) #constraint (6)
 #model.st(Bdis[i] <= c[i] * 100000 for i in range(0,n))
 model.st(Bch[t] <= (1-c[t]) * 100000 for t in range(0,m))
 model.st(Bdis[t] <= c[t] * 100000 for t in range(0,m))
+# OPTIGUIDE CONSTRAINT CODE GOES HERE
+
 #SoEprev = SoEnext.get()
 
 ############################# SOLVING ############################

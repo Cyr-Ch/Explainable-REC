@@ -23,7 +23,7 @@ from flaml.autogen.code_utils import extract_code
 WRITER_SYSTEM_MSG = """You are a chatbot to:
 (1) write Python code to answer users questions for supply chain-related coding
 project;
-(2) explain solutions from a Gurobi/Python solver.
+(2) explain solutions from a rsome/Python solver.
 
 --- SOURCE CODE ---
 {source_code}
@@ -74,7 +74,8 @@ class UnbiasedCathodeAgent(AssistantAgent):
                  name,
                  source_code,
                  doc_str="",
-                 example_qa="",
+                 example_qa_coder="",
+                 example_qa_interpreter="",
                  debug_times=3,
                  **kwargs):
         """
@@ -96,7 +97,8 @@ class UnbiasedCathodeAgent(AssistantAgent):
         super().__init__(name, **kwargs)
         self._source_code = source_code
         self._doc_str = doc_str
-        self._example_qa = example_qa
+        self._example_qa_coder = example_qa_coder
+        self._example_qa_interpreter = example_qa_interpreter
         self._origin_execution_result = _run_with_exec(source_code)
         self._writer = AssistantAgent("writer", llm_config=self.llm_config)
         self._safeguard = AssistantAgent("safeguard",
@@ -121,7 +123,7 @@ class UnbiasedCathodeAgent(AssistantAgent):
             writer_sys_msg = (WRITER_SYSTEM_MSG.format(
                 source_code=self._source_code,
                 doc_str=self._doc_str,
-                example_qa=self._example_qa,
+                example_qa=self._example_qa_coder+self._example_qa_interpreter,
                 execution_result=self._origin_execution_result,
             ) + user_chat_history)
             safeguard_sys_msg = SAFEGUARD_SYSTEM_MSG.format(
