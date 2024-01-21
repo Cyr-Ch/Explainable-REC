@@ -23,7 +23,7 @@ from flaml.autogen.code_utils import extract_code
 WRITER_SYSTEM_MSG = """You are a chatbot to:
 (1) write Python code to answer users questions for supply chain-related coding
 project;
-(2) explain solutions from a rsome/Python solver.
+(2) explain solutions from a Gurobi/rsome/Python solver.
 
 --- SOURCE CODE ---
 {source_code}
@@ -43,7 +43,7 @@ The execution result of the original source code is below.
 
 Note that your written code will be added to the lines with substring:
 "# OPTIGUIDE *** CODE GOES HERE"
-So, you don't need to write other code, such as m.optimize() or m.update().
+So, you don't need to write other code, such as m.optimize() or m.update() or m.solve() or model.update() or model.reset() or model.solve().
 You just need to write code snippet in ```python ...``` block.
 """
 
@@ -67,7 +67,7 @@ class MicroGridOptAgent(AssistantAgent):
     """(Experimental) UnbiasedCathode is an agent to answer
     users questions for supply chain-related coding project.
 
-    The UnbiasedCathode agent manages two assistant agents (writer and safeguard).
+    The agent manages two assistant agents (writer and safeguard).
     """
 
     def __init__(self,
@@ -160,9 +160,10 @@ class MicroGridOptAgent(AssistantAgent):
         if safe_msg.find("DANGER") < 0:
             # Step 4 and 5: Run the code and obtain the results
             src_code = _insert_code(self._source_code, code)
-            #print(src_code)
+            print("CODE TO BE EXECUTED")
+            print(src_code)
             execution_rst = _run_with_exec(src_code)
-            #print(colored(str(execution_rst), "yellow"))
+            print(colored(str(execution_rst), "yellow"))
             if type(execution_rst) in [str, int, float]:
                 # we successfully run the code and get the result
                 self._success = True
@@ -220,12 +221,18 @@ def _run_with_exec(src_code: str) -> Union[str, Exception]:
                 ans = "unbounded"
             elif status == GRB.INF_OR_UNBD:
                 ans = "inf_or_unbound"
+                m = locals_dict["m"]
+                m.computeIIS()
+                constrs = [c.ConstrName for c in m.getConstrs() if c.IISConstr]
+                ans += "\nConflicting Constraints:\n" + str(constrs)
+                print(ans)
             elif status == GRB.INFEASIBLE:
                 ans = "infeasible"
                 m = locals_dict["m"]
                 m.computeIIS()
                 constrs = [c.ConstrName for c in m.getConstrs() if c.IISConstr]
                 ans += "\nConflicting Constraints:\n" + str(constrs)
+                print(ans)
             else:
                 ans = "Model Status:" + str(status)
         else:
@@ -318,5 +325,12 @@ Can you organize these information to a human readable answer?
 Remember to compare the new results to the original results you obtained in the
 beginning.
 
+A positive objective value reflects a cost. So if the outcome of the optimization is positive use the word cost instead of profit. 
+A negative objective value reflects a profit. When the result is negative do not show the minus sign.
+
+If the problem is infeasible, elaborate on the specific constraints that are violated.
+If the problem is unbounded, elaborate on the specific bounds that are violated.
 --- HUMAN READABLE ANSWER ---
 """
+
+# %%
