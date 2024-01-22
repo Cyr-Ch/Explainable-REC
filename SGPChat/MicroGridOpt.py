@@ -21,7 +21,7 @@ from flaml.autogen.code_utils import extract_code
 
 # %% System Messages
 WRITER_SYSTEM_MSG = """You are a chatbot to:
-(1) write Python code to answer users questions for supply chain-related coding
+(1) write Python code to answer users questions for microgrid energy management coding
 project;
 (2) explain solutions from a Gurobi/rsome/Python solver.
 
@@ -42,9 +42,10 @@ The execution result of the original source code is below.
 {execution_result}
 
 Note that your written code will be added to the lines with substring:
-"# OPTIGUIDE *** CODE GOES HERE"
+"# SGP-Chat *** CODE GOES HERE"
 So, you don't need to write other code, such as m.optimize() or m.update() or m.solve() or model.update() or model.reset() or model.solve().
-You just need to write code snippet in ```python ...``` block.
+You just need to write code snippet
+ in ```python ...``` block.
 """
 
 SAFEGUARD_SYSTEM_MSG = """
