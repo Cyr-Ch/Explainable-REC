@@ -1,0 +1,13 @@
+﻿Question,GT Code,GT Objective Value,SGP Code,SGP Objective Value
+"What is the current energy production for participant {{VALUE_PROSUMER}}?","print(Pprod[len(Pprod)-1][{{VALUE_PROSUMER}}])","","",""
+"What is the energy production for participant {{VALUE_PROSUMER}} at time step {{VALUE_TIMESTEP}}?","print(Pprod[{{VALUE_TIMESTEP}}][{{VALUE_PROSUMER}}])","","",""
+"What happens if the community production decreases by {{VALUE_PERCENTAGE}}%?","Pprod = Pprod*(100-{{VALUE_PERCENTAGE}})/100","","",""
+"What happens if the community production increases by {{VALUE_PERCENTAGE}}%?","Pprod = Pprod*(100+{{VALUE_PERCENTAGE}})/100","","",""
+"What is the current energy consumption for participant {{VALUE_PROSUMER}}?","print(Pcons[len(Pprod)-1][{{VALUE_PROSUMER}}])","","",""
+"What is the energy consumption for participant {{VALUE_PROSUMER}} at time step {{VALUE_TIMESTEP}}?","print(Pcons[{{VALUE_TIMESTEP}}][{{VALUE_PROSUMER}}])","","",""
+"What happens if the community consumption decreases by {{VALUE_PERCENTAGE}}%?","Pcons = Pcons*(100-{{VALUE_PERCENTAGE}})/100","","",""
+"What happens if the community consumption increases by {{VALUE_PERCENTAGE}}%?","Pcons = Pcons*(100+{{VALUE_PERCENTAGE}})/100","","",""
+"What is the current energy load for participant {{VALUE_PROSUMER}}?","print(Pcons[len(Pprod)-1][{{VALUE_PROSUMER}}])","","",""
+"What is the energy load for participant {{VALUE_PROSUMER}} at time step {{VALUE_TIMESTEP}}?","print(Pcons[{{VALUE_TIMESTEP}}][{{VALUE_PROSUMER}}])","","",""
+"What happens if the community load decreases by {{VALUE_PERCENTAGE}}%?","Pcons = Pcons*(100-{{VALUE_PERCENTAGE}})/100","","",""
+"What happens if the community load increases by {{VALUE_PERCENTAGE}}%?","Pcons = Pcons*(100+{{VALUE_PERCENTAGE}})/100","","",""
