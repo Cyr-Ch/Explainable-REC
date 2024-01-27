@@ -88,8 +88,8 @@ model.addConstrs(Bdis[t, i] <= Kdis for t in range(m) for i in range(n))
 model.addConstrs(Bch[t, i] <= (1 - c[t, i]) * 100000 for t in range(m) for i in range(n))
 model.addConstrs(Bdis[t, i] <= c[t, i] * 100000 for t in range(m) for i in range(n))
 
-model.addConstr(Pimp[1] == Pimp[1-1]*(100-14)/100) 
-model.addConstrs(Pimp[i] <= Pimp[1] for i in range(1+1, len(Pimp)))
+model.addConstr(Pimp[2] == Pimp[2-1]*(100-33)/100) 
+model.addConstrs(Pimp[i] <= Pimp[2] for i in range(2+1, len(Pimp)))
 
 
 # Solve the problem using Gurobi solver

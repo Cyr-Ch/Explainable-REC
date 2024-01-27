@@ -104,8 +104,11 @@ class MicroGridOptAgent(AssistantAgent):
         self._writer = AssistantAgent("writer", llm_config=self.llm_config)
         self._safeguard = AssistantAgent("safeguard",
                                          llm_config=self.llm_config)
+        self.execution_out = ""
         self._debug_times_left = self.debug_times = debug_times
         self._success = False
+        self.reply =""
+        self.code = ""
 
     def generate_reply(
         self,
@@ -140,13 +143,19 @@ class MicroGridOptAgent(AssistantAgent):
             if self._success:
                 # step 7: receive interpret result
                 reply = self.last_message(self._writer)["content"]
+                self.reply = self.last_message(self._writer)["content"]
+                print(self.reply)
             else:
                 reply = "Sorry. I cannot answer your question."
+                self.reply = reply
             # Finally, step 8: send reply to user
             return reply
         if sender == self._writer:
             # reply to writer
-            return self._generate_reply_to_writer(sender)
+            execution_out = self._generate_reply_to_writer(sender)
+            print("Execution out")
+            print(execution_out)
+            return execution_out
         # no reply to safeguard
 
     def _generate_reply_to_writer(self, sender):
@@ -155,15 +164,19 @@ class MicroGridOptAgent(AssistantAgent):
             return
         # Step 3: safeguard
         _, code = extract_code(self.last_message(sender)["content"])[0]
+        self.code = code
         self.initiate_chat(message=SAFEGUARD_PROMPT.format(code=code),
                            recipient=self._safeguard)
         safe_msg = self.last_message(self._safeguard)["content"]
         if safe_msg.find("DANGER") < 0:
             # Step 4 and 5: Run the code and obtain the results
             src_code = _insert_code(self._source_code, code)
-            print("CODE TO BE EXECUTED")
-            print(src_code)
+            #print("CODE TO BE EXECUTED")
+            #print(src_code)
             execution_rst = _run_with_exec(src_code)
+            self.execution_out = str(execution_rst)
+            print("PRINTING THE SELF")
+            print(self.execution_out)
             print(colored(str(execution_rst), "yellow"))
             if type(execution_rst) in [str, int, float]:
                 # we successfully run the code and get the result

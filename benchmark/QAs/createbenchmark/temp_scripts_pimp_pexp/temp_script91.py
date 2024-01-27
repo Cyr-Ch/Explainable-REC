@@ -88,7 +88,7 @@ model.addConstrs(Bdis[t, i] <= Kdis for t in range(m) for i in range(n))
 model.addConstrs(Bch[t, i] <= (1 - c[t, i]) * 100000 for t in range(m) for i in range(n))
 model.addConstrs(Bdis[t, i] <= c[t, i] * 100000 for t in range(m) for i in range(n))
 
-model.addConstr(Pexp[1] == Pexp[1-1]*(100-34)/100) 
+model.addConstr(Pexp[1] == Pexp[1-1]*(100-93)/100) 
 model.addConstrs(Pexp[i] <= Pexp[1] for i in range(1+1, len(Pexp)))
 
 

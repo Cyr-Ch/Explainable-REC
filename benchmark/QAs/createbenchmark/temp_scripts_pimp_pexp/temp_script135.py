@@ -88,8 +88,8 @@ model.addConstrs(Bdis[t, i] <= Kdis for t in range(m) for i in range(n))
 model.addConstrs(Bch[t, i] <= (1 - c[t, i]) * 100000 for t in range(m) for i in range(n))
 model.addConstrs(Bdis[t, i] <= c[t, i] * 100000 for t in range(m) for i in range(n))
 
-model.addConstr(Pexp[0] == Pexp[0-1]*(100-29)/100) 
-model.addConstrs(Pexp[i] >= Pexp[0] for i in range(0+1, len(Pexp)))
+model.addConstr(Pexp[2] == Pexp[2-1]*(100-58)/100) 
+model.addConstrs(Pexp[i] >= Pexp[2] for i in range(2+1, len(Pexp)))
 
 
 # Solve the problem using Gurobi solver
