@@ -17,7 +17,7 @@ CONSTRAINT_CODE_STR = "# OPTIGUIDE CONSTRAINT CODE GOES HERE"
 def VALUE_PERCENTAGE():
     return random.choice([i for i in range(101)])
 
-def create_combinations(prosumer, timestep, percentage, num_combinations=20):
+def create_combinations(prosumer, timestep, percentage, num_combinations=10):
     # Generate different combinations
     combinations = []
     if percentage:

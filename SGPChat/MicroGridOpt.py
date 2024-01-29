@@ -43,7 +43,8 @@ The execution result of the original source code is below.
 
 Note that your written code will be added to the lines with substring:
 "# SGP-Chat *** CODE GOES HERE"
-So, you don't need to write other code, such as m.optimize() or m.update() or m.solve() or model.update() or model.reset() or model.solve().
+The variable max_imp is the maximum imported energy and the variable max_exp is the maximum exported energy by the community for all time steps. 
+So, you don't need to write other code, such as m.optimize() or m.update() or m.solve() or m.update() or m.reset() or m.solve() or model.optimize() or model.update() or model.solve() or model.update() or model.reset() or model.solve().
 You just need to write code snippet
  in ```python ...``` block.
 """

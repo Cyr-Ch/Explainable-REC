@@ -32,14 +32,12 @@ Kch = (0.8 * capacity) / Dt  # 40% charging limit Energy/time > Power
 Kdis = (0.8 * capacity) / Dt  # 40% discharging limit Energy/time => Power
 
 # upper and lower bounds
-UB_x = 10000000  # maximum import
-UB_y = 10000000  # maximum export
+max_imp = 10000000  # maximum import
+max_exp = 10000000  # maximum export
 
 # Create a model object
 model = gp.Model('model')
 
-# OPTIGUIDE *** CODE GOES HERE
-# OPTIGUIDE DATA CODE GOES HERE
 
 # Create variables
 # decision variables
@@ -51,6 +49,12 @@ SoE = model.addVars(m, n, name="SoE")  # State of Energy (of the battery)
 b = model.addVars(m, vtype=GRB.BINARY, name="b")  # binary variable
 c = model.addVars(m, n, vtype=GRB.BINARY, name="c")  # binary variable
 SoEnext = model.addVars(m, n, name="SoEnext")  # State of Energy of the battery in the next time timeslot
+
+
+# OPTIGUIDE DATA CODE GOES HERE
+# OPTIGUIDE *** CODE GOES HERE
+
+
 
 # Define the objective function
 model.setObjective((PriceImp * Pimp.sum() - PriceEx * Pexp.sum()), GRB.MINIMIZE)
@@ -65,8 +69,8 @@ for t in range(m):
 
 # 2. No import and export at the same time constraint
 for t in range(m):
-    model.addConstr(Pimp[t] <= (1 - b[t]) * UB_x)
-    model.addConstr(Pexp[t] <= b[t] * UB_y)
+    model.addConstr(Pimp[t] <= (1 - b[t]) * max_imp)
+    model.addConstr(Pexp[t] <= b[t] * max_exp)
     model.addConstr(Pimp[t] >= 0)
     model.addConstr(Pexp[t] >= 0)
 
