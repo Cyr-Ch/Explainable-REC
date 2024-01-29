@@ -1,0 +1,80 @@
+Question,GT Code,GT Objective Value,SGP Code,SGP Objective Value
+What would be the profit if the community imports decrease by 35%?,model.addConstrs(Pimp[t] == Pimp[t]*(100-35)/100 for t in range(len(Pimp))),-26.111111111111114,,
+What would be the profit if the community imports decrease by 54%?,model.addConstrs(Pimp[t] == Pimp[t]*(100-54)/100 for t in range(len(Pimp))),-26.111111111111114,,
+What would be the profit if the community imports decrease by 7%?,model.addConstrs(Pimp[t] == Pimp[t]*(100-7)/100 for t in range(len(Pimp))),-26.111111111111114,,
+What would be the profit if the community imports decrease by 65%?,model.addConstrs(Pimp[t] == Pimp[t]*(100-65)/100 for t in range(len(Pimp))),-26.111111111111114,,
+What would be the profit if the community imports increase by 62%?,model.addConstrs(Pimp[t] == Pimp[t]*(100+62)/100 for t in range(len(Pimp))),-26.111111111111114,,
+What would be the profit if the community imports increase by 18%?,model.addConstrs(Pimp[t] == Pimp[t]*(100+18)/100 for t in range(len(Pimp))),-26.111111111111114,,
+What would be the profit if the community imports increase by 3%?,model.addConstrs(Pimp[t] == Pimp[t]*(100+3)/100 for t in range(len(Pimp))),-26.111111111111114,,
+What would be the profit if the community imports increase by 36%?,model.addConstrs(Pimp[t] == Pimp[t]*(100+36)/100 for t in range(len(Pimp))),-26.111111111111114,,
+What would be the profit if the community imports increase by 44%?,model.addConstrs(Pimp[t] == Pimp[t]*(100+44)/100 for t in range(len(Pimp))),-26.111111111111114,,
+What would be the profit if the community imports decrease by 57% at the time step 3?,model.addConstr(Pimp[2] == Pimp[2]*(100-57)/100),-26.111111111111114,,
+What would be the profit if the community imports decrease by 72% at the time step 2?,model.addConstr(Pimp[1] == Pimp[1]*(100-72)/100),-26.111111111111114,,
+What would be the profit if the community imports decrease by 27% at the time step 3?,model.addConstr(Pimp[2] == Pimp[2]*(100-27)/100),-26.111111111111114,,
+What would be the profit if the community imports decrease by 10% at the time step 1?,model.addConstr(Pimp[0] == Pimp[0]*(100-10)/100),-26.111111111111114,,
+What would be the profit if the community imports decrease by 91% at the time step 3?,model.addConstr(Pimp[2] == Pimp[2]*(100-91)/100),-26.111111111111114,,
+What would be the profit if the community imports increase by 4% at the time step 3?,model.addConstr(Pimp[2] == Pimp[2]*(100+4)/100),-26.111111111111114,,
+What would be the profit if the community imports increase by 51% at the time step 2?,model.addConstr(Pimp[1] == Pimp[1]*(100+51)/100),-26.111111111111114,,
+What would be the profit if the community imports increase by 38% at the time step 3?,model.addConstr(Pimp[2] == Pimp[2]*(100+38)/100),-26.111111111111114,,
+What would be the profit if the community imports increase by 74% at the time step 1?,model.addConstr(Pimp[0] == Pimp[0]*(100+74)/100),-26.111111111111114,,
+What would be the profit if the community imports increase by 79% at the time step 2?,model.addConstr(Pimp[1] == Pimp[1]*(100+79)/100),-26.111111111111114,,
+What would be the profit if the community exports decrease by 78%?,model.addConstrs(Pexp[t] == Pexp[t]*(100-78)/100 for t in range(len(Pimp))),"inf_or_unbound
+Conflicting Constraints:
+['R0', 'R1', 'R2', 'R15', 'R16', 'R17', 'R18', 'R19', 'R20', 'R21', 'R22', 'R23', 'R24', 'R25', 'R26', 'R27', 'R28', 'R29', 'R30', 'R31', 'R32', 'R33', 'R34', 'R35', 'R36', 'R37', 'R38', 'R47', 'R48', 'R49', 'R50', 'R135', 'R136', 'R137']",,
+What would be the profit if the community exports decrease by 41%?,model.addConstrs(Pexp[t] == Pexp[t]*(100-41)/100 for t in range(len(Pimp))),"inf_or_unbound
+Conflicting Constraints:
+['R0', 'R1', 'R2', 'R15', 'R16', 'R17', 'R18', 'R19', 'R20', 'R21', 'R22', 'R23', 'R24', 'R25', 'R26', 'R27', 'R28', 'R29', 'R30', 'R31', 'R32', 'R33', 'R34', 'R35', 'R36', 'R37', 'R38', 'R47', 'R48', 'R49', 'R50', 'R135', 'R136', 'R137']",,
+What would be the profit if the community exports decrease by 13%?,model.addConstrs(Pexp[t] == Pexp[t]*(100-13)/100 for t in range(len(Pimp))),"inf_or_unbound
+Conflicting Constraints:
+['R0', 'R1', 'R2', 'R15', 'R16', 'R17', 'R18', 'R19', 'R20', 'R21', 'R22', 'R23', 'R24', 'R25', 'R26', 'R27', 'R28', 'R29', 'R30', 'R31', 'R32', 'R33', 'R34', 'R35', 'R36', 'R37', 'R38', 'R47', 'R48', 'R49', 'R50', 'R135', 'R136', 'R137']",,
+What would be the profit if the community exports decrease by 65%?,model.addConstrs(Pexp[t] == Pexp[t]*(100-65)/100 for t in range(len(Pimp))),"inf_or_unbound
+Conflicting Constraints:
+['R0', 'R1', 'R2', 'R15', 'R16', 'R17', 'R18', 'R19', 'R20', 'R21', 'R22', 'R23', 'R24', 'R25', 'R26', 'R27', 'R28', 'R29', 'R30', 'R31', 'R32', 'R33', 'R34', 'R35', 'R36', 'R37', 'R38', 'R47', 'R48', 'R49', 'R50', 'R135', 'R136', 'R137']",,
+What would be the profit if the community exports decrease by 55%?,model.addConstrs(Pexp[t] == Pexp[t]*(100-55)/100 for t in range(len(Pimp))),"inf_or_unbound
+Conflicting Constraints:
+['R0', 'R1', 'R2', 'R15', 'R16', 'R17', 'R18', 'R19', 'R20', 'R21', 'R22', 'R23', 'R24', 'R25', 'R26', 'R27', 'R28', 'R29', 'R30', 'R31', 'R32', 'R33', 'R34', 'R35', 'R36', 'R37', 'R38', 'R47', 'R48', 'R49', 'R50', 'R135', 'R136', 'R137']",,
+What would be the profit if the community exports increase by 74%?,model.addConstrs(Pexp[t] == Pexp[t]*(100+74)/100 for t in range(len(Pimp))),"inf_or_unbound
+Conflicting Constraints:
+['R0', 'R1', 'R2', 'R15', 'R16', 'R17', 'R18', 'R19', 'R20', 'R21', 'R22', 'R23', 'R24', 'R25', 'R26', 'R27', 'R28', 'R29', 'R30', 'R31', 'R32', 'R33', 'R34', 'R35', 'R36', 'R37', 'R38', 'R47', 'R48', 'R49', 'R50', 'R135', 'R136', 'R137']",,
+What would be the profit if the community exports increase by 90%?,model.addConstrs(Pexp[t] == Pexp[t]*(100+90)/100 for t in range(len(Pimp))),"inf_or_unbound
+Conflicting Constraints:
+['R0', 'R1', 'R2', 'R15', 'R16', 'R17', 'R18', 'R19', 'R20', 'R21', 'R22', 'R23', 'R24', 'R25', 'R26', 'R27', 'R28', 'R29', 'R30', 'R31', 'R32', 'R33', 'R34', 'R35', 'R36', 'R37', 'R38', 'R47', 'R48', 'R49', 'R50', 'R135', 'R136', 'R137']",,
+What would be the profit if the community exports increase by 55%?,model.addConstrs(Pexp[t] == Pexp[t]*(100+55)/100 for t in range(len(Pimp))),"inf_or_unbound
+Conflicting Constraints:
+['R0', 'R1', 'R2', 'R15', 'R16', 'R17', 'R18', 'R19', 'R20', 'R21', 'R22', 'R23', 'R24', 'R25', 'R26', 'R27', 'R28', 'R29', 'R30', 'R31', 'R32', 'R33', 'R34', 'R35', 'R36', 'R37', 'R38', 'R47', 'R48', 'R49', 'R50', 'R135', 'R136', 'R137']",,
+What would be the profit if the community exports increase by 12%?,model.addConstrs(Pexp[t] == Pexp[t]*(100+12)/100 for t in range(len(Pimp))),"inf_or_unbound
+Conflicting Constraints:
+['R0', 'R1', 'R2', 'R15', 'R16', 'R17', 'R18', 'R19', 'R20', 'R21', 'R22', 'R23', 'R24', 'R25', 'R26', 'R27', 'R28', 'R29', 'R30', 'R31', 'R32', 'R33', 'R34', 'R35', 'R36', 'R37', 'R38', 'R47', 'R48', 'R49', 'R50', 'R135', 'R136', 'R137']",,
+What would be the profit if the community exports increase by 64%?,model.addConstrs(Pexp[t] == Pexp[t]*(100+64)/100 for t in range(len(Pimp))),"inf_or_unbound
+Conflicting Constraints:
+['R0', 'R1', 'R2', 'R15', 'R16', 'R17', 'R18', 'R19', 'R20', 'R21', 'R22', 'R23', 'R24', 'R25', 'R26', 'R27', 'R28', 'R29', 'R30', 'R31', 'R32', 'R33', 'R34', 'R35', 'R36', 'R37', 'R38', 'R47', 'R48', 'R49', 'R50', 'R135', 'R136', 'R137']",,
+What would be the profit if the community exports decrease by 41% at the time step 2?,model.addConstr(Pexp[1] == Pexp[1]*(100-41)/100),"inf_or_unbound
+Conflicting Constraints:
+['R1', 'R23', 'R24', 'R25', 'R26', 'R31', 'R32', 'R33', 'R34', 'R43', 'R44', 'R45', 'R46', 'R51', 'R52', 'R53', 'R54', 'R135']",,
+What would be the profit if the community exports decrease by 26% at the time step 3?,model.addConstr(Pexp[2] == Pexp[2]*(100-26)/100),"inf_or_unbound
+Conflicting Constraints:
+['R2', 'R27', 'R28', 'R29', 'R30', 'R35', 'R36', 'R37', 'R38', 'R47', 'R48', 'R49', 'R50', 'R55', 'R56', 'R57', 'R58', 'R135']",,
+What would be the profit if the community exports decrease by 83% at the time step 2?,model.addConstr(Pexp[1] == Pexp[1]*(100-83)/100),"inf_or_unbound
+Conflicting Constraints:
+['R1', 'R23', 'R24', 'R25', 'R26', 'R31', 'R32', 'R33', 'R34', 'R43', 'R44', 'R45', 'R46', 'R51', 'R52', 'R53', 'R54', 'R135']",,
+What would be the profit if the community exports decrease by 78% at the time step 2?,model.addConstr(Pexp[1] == Pexp[1]*(100-78)/100),"inf_or_unbound
+Conflicting Constraints:
+['R1', 'R23', 'R24', 'R25', 'R26', 'R31', 'R32', 'R33', 'R34', 'R43', 'R44', 'R45', 'R46', 'R51', 'R52', 'R53', 'R54', 'R135']",,
+What would be the profit if the community exports decrease by 8% at the time step 1?,model.addConstr(Pexp[0] == Pexp[0]*(100-8)/100),"inf_or_unbound
+Conflicting Constraints:
+['R0', 'R15', 'R16', 'R17', 'R18', 'R19', 'R20', 'R21', 'R22', 'R39', 'R40', 'R41', 'R42', 'R135']",,
+What would be the profit if the community exports increase by 45% at the time step 2?,model.addConstr(Pexp[1] == Pexp[1]*(100+45)/100),"inf_or_unbound
+Conflicting Constraints:
+['R1', 'R23', 'R24', 'R25', 'R26', 'R31', 'R32', 'R33', 'R34', 'R43', 'R44', 'R45', 'R46', 'R51', 'R52', 'R53', 'R54', 'R135']",,
+What would be the profit if the community exports increase by 63% at the time step 1?,model.addConstr(Pexp[0] == Pexp[0]*(100+63)/100),"inf_or_unbound
+Conflicting Constraints:
+['R0', 'R15', 'R16', 'R17', 'R18', 'R19', 'R20', 'R21', 'R22', 'R39', 'R40', 'R41', 'R42', 'R135']",,
+What would be the profit if the community exports increase by 80% at the time step 1?,model.addConstr(Pexp[0] == Pexp[0]*(100+80)/100),"inf_or_unbound
+Conflicting Constraints:
+['R0', 'R15', 'R16', 'R17', 'R18', 'R19', 'R20', 'R21', 'R22', 'R39', 'R40', 'R41', 'R42', 'R135']",,
+What would be the profit if the community exports increase by 87% at the time step 1?,model.addConstr(Pexp[0] == Pexp[0]*(100+87)/100),"inf_or_unbound
+Conflicting Constraints:
+['R0', 'R15', 'R16', 'R17', 'R18', 'R19', 'R20', 'R21', 'R22', 'R39', 'R40', 'R41', 'R42', 'R135']",,
+What would be the profit if the community exports increase by 54% at the time step 1?,model.addConstr(Pexp[0] == Pexp[0]*(100+54)/100),"inf_or_unbound
+Conflicting Constraints:
+['R0', 'R15', 'R16', 'R17', 'R18', 'R19', 'R20', 'R21', 'R22', 'R39', 'R40', 'R41', 'R42', 'R135']",,

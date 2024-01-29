@@ -17,7 +17,7 @@ CONSTRAINT_CODE_STR = "# OPTIGUIDE CONSTRAINT CODE GOES HERE"
 def VALUE_PERCENTAGE():
     return random.choice([i for i in range(101)])
 
-def create_combinations(prosumer, timestep, percentage, num_combinations=10):
+def create_combinations(prosumer, timestep, percentage, num_combinations=5):
     # Generate different combinations
     combinations = []
     if percentage:
@@ -182,7 +182,7 @@ def compute_gt_questions(file_path, opt_script):
             prosumer = "{{VALUE_PROSUMER}}" in question
             timestep = "{{VALUE_TIMESTEP}}" in question
             percentage = "{{VALUE_PERCENTAGE}}" in question
-            combinations_question = create_combinations(prosumer, timestep, percentage, num_combinations=20)
+            combinations_question = create_combinations(prosumer, timestep, percentage, num_combinations=5)
 
             #print(combinations_question)
             for comb_question in combinations_question:
@@ -214,7 +214,7 @@ def compute_gt_questions(file_path, opt_script):
                 # Add the line to the script
                 modified_script =  _insert_code(original_script, final_gt_code)
                 # Write the modified script to a temporary file
-                temp_script_path = '/Users/cchaabani/Documents/GitRepo/SGP-Chat/benchmark/QAs/createbenchmark/temp_scripts_pimp_pexp/temp_script'+str(counter)+'.py'
+                temp_script_path = '/Users/cchaabani/Documents/GitRepo/SGP-Chat/benchmark/QAs/createbenchmark/temp_scripts_pimp_pexp_easy/temp_script'+str(counter)+'.py'
                 with open(temp_script_path, 'w') as temp_script_file:
                     temp_script_file.write(modified_script)
 
