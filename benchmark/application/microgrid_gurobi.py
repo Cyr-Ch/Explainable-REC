@@ -50,9 +50,9 @@ b = model.addVars(m, vtype=GRB.BINARY, name="b")  # binary variable
 c = model.addVars(m, n, vtype=GRB.BINARY, name="c")  # binary variable
 SoEnext = model.addVars(m, n, name="SoEnext")  # State of Energy of the battery in the next time timeslot
 
-
-# OPTIGUIDE DATA CODE GOES HERE
 # OPTIGUIDE *** CODE GOES HERE
+# OPTIGUIDE DATA CODE GOES HERE
+
 
 
 

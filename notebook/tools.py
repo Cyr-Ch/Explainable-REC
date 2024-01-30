@@ -17,7 +17,8 @@ def icl_code_generator(path_to_q_db):
     
     icl_code =""
     for question in range(1,len(q_db)):
-        icl_code += q_db[question][0]+'\n'+q_db[question][1]+'\n'
+        if len(q_db[question]) > 1:
+            icl_code += q_db[question][0]+'\n'+q_db[question][1]+'\n'
     return icl_code
          
 
