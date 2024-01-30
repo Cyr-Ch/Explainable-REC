@@ -47,6 +47,7 @@ The variable max_imp is the maximum imported energy and the variable max_exp is 
 So, you don't need to write other code, such as m.optimize() or m.update() or m.solve() or m.update() or m.reset() or m.solve() or model.optimize() or model.update() or model.solve() or model.update() or model.reset() or model.solve().
 You just need to write code snippet
  in ```python ...``` block.
+Also note that at time step t = 0, the local time is 1pm. We are considering  hourly scheduling so t = 1 is 2pm, t = 2 is 3 pm, etc
 """
 
 SAFEGUARD_SYSTEM_MSG = """

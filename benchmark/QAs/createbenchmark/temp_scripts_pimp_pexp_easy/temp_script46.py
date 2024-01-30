@@ -50,9 +50,10 @@ b = model.addVars(m, vtype=GRB.BINARY, name="b")  # binary variable
 c = model.addVars(m, n, vtype=GRB.BINARY, name="c")  # binary variable
 SoEnext = model.addVars(m, n, name="SoEnext")  # State of Energy of the battery in the next time timeslot
 
-
-# OPTIGUIDE DATA CODE GOES HERE
 # OPTIGUIDE *** CODE GOES HERE
+Pcons[1][0] = Pcons[1][0]*(100-82)/100 
+Pcons[2][0] =Pcons[2][0] + Pcons[1][0]*(100-82)/100
+
 
 
 
@@ -92,7 +93,7 @@ model.addConstrs(Bdis[t, i] <= Kdis for t in range(m) for i in range(n))
 model.addConstrs(Bch[t, i] <= (1 - c[t, i]) * 100000 for t in range(m) for i in range(n))
 model.addConstrs(Bdis[t, i] <= c[t, i] * 100000 for t in range(m) for i in range(n))
 
-model.addConstr(Pimp[2] == Pimp[2]*(100-37)/100)
+# OPTIGUIDE CONSTRAINT CODE GOES HERE
 
 
 # Solve the problem using Gurobi solver

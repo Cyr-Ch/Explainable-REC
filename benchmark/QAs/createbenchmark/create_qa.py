@@ -10,7 +10,7 @@ from typing import Dict, List, Optional, Union
 from eventlet.timeout import Timeout
 
 VALUE_PROSUMER=[1,2,3,4]
-VALUE_TIMESTEP=[1,2,3]
+VALUE_TIMESTEP=[1,2]
 DATA_CODE_STR = "# OPTIGUIDE DATA CODE GOES HERE"
 CONSTRAINT_CODE_STR = "# OPTIGUIDE CONSTRAINT CODE GOES HERE"
 
