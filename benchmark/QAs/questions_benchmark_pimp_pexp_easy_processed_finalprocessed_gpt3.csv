@@ -1,0 +1,33 @@
+Question,GT Code,GT Objective Value,SGP Code,SGP Objective Value,SGP Interpretation
+What would be the profit if the community imports decrease by 35%?,model.addConstrs(Pimp[t] == Pimp[t]*(100-35)/100 for t in range(len(Pimp))),-26.111111111111114,model.addConstrs(Pimp[t] == Pimp[t]*(1-0.35) for t in range(len(Pimp))),Optimization problem solved. The objective value is: -26.21111111111112,
+What would be the profit if the community imports decrease by 54%?,model.addConstrs(Pimp[t] == Pimp[t]*(100-54)/100 for t in range(len(Pimp))),-26.111111111111114,model.addConstrs(Pimp[t] == Pimp[t]*(1-0.54) for t in range(len(Pimp))),Optimization problem solved. The objective value is: -26.21111111111112,
+What would be the profit if the community imports decrease by 7%?,model.addConstrs(Pimp[t] == Pimp[t]*(100-7)/100 for t in range(len(Pimp))),-26.111111111111114,model.addConstrs(Pimp[t] == Pimp[t]*(100-7)/100 for t in range(len(Pimp))),Optimization problem solved. The objective value is: -26.111111111111114,
+What would be the profit if the community imports decrease by 65%?,model.addConstrs(Pimp[t] == Pimp[t]*(100-65)/100 for t in range(len(Pimp))),-26.111111111111114,Pimp = Pimp*0.35,Optimization problem solved. The objective value is: -26.111111111111114,
+What would be the profit if the community imports increase by 62%?,model.addConstrs(Pimp[t] == Pimp[t]*(100+62)/100 for t in range(len(Pimp))),-26.111111111111114,model.addConstrs(Pimp[t] == Pimp[t]*(1+0.62) for t in range(len(Pimp))),Optimization problem solved. The objective value is: -26.111111111111114,
+What would be the profit if the community imports increase by 18%?,model.addConstrs(Pimp[t] == Pimp[t]*(100+18)/100 for t in range(len(Pimp))),-26.111111111111114,"for t in range(len(Pimp)):
+    Pimp[t] = Pimp[t] * (1 + 18/100)",Optimization problem solved. The objective value is: -26.111111111111114,
+What would be the profit if the community imports increase by 3%?,model.addConstrs(Pimp[t] == Pimp[t]*(100+3)/100 for t in range(len(Pimp))),-26.111111111111114,"# Increase imports by 3%
+for t in range(len(Pimp)):
+    Pimp[t] = Pimp[t] * (100 + 3) / 100",Optimization problem solved. The objective value is: -26.111111111111114,
+What would be the profit if the community imports increase by 36%?,model.addConstrs(Pimp[t] == Pimp[t]*(100+36)/100 for t in range(len(Pimp))),-26.111111111111114,model.addConstrs(Pimp[t] == Pimp[t]*(100+36)/100 for t in range(m)),Optimization problem solved. The objective value is: -26.111111111111114,
+What would be the profit if the community imports increase by 44%?,model.addConstrs(Pimp[t] == Pimp[t]*(100+44)/100 for t in range(len(Pimp))),-26.111111111111114,"# Increase the community imports by 44%
+for t in range(len(Pimp)):
+    Pimp[t] = Pimp[t] * (100 + 44) / 100",Optimization problem solved. The objective value is: -26.111111111111114,
+What would be the profit if the community imports decrease by 57% at the time step 3?,model.addConstr(Pimp[2] == Pimp[2]*(100-57)/100),-26.111111111111114,model.addConstr(Pimp[2] == Pimp[2]*(100-57)/100),Optimization problem solved. The objective value is: -26.111111111111114,
+What would be the profit if the community imports decrease by 72% at the time step 2?,model.addConstr(Pimp[1] == Pimp[1]*(100-72)/100),-26.111111111111114,model.addConstrs(Pimp[t] == Pimp[t]*(100-72)/100 for t in range(len(Pimp))),Optimization problem solved. The objective value is: -26.111111111111114,
+What would be the profit if the community imports decrease by 27% at the time step 3?,model.addConstr(Pimp[2] == Pimp[2]*(100-27)/100),-26.111111111111114,model.addConstr(Pimp[2] == Pimp[2]*(100-27)/100),Optimization problem solved. The objective value is: -26.111111111111114,
+What would be the profit if the community imports decrease by 10% at the time step 1?,model.addConstr(Pimp[0] == Pimp[0]*(100-10)/100),-26.111111111111114,model.addConstr(Pimp[0] == Pimp[0]*(100-10)/100),Optimization problem solved. The objective value is: -26.111111111111114,
+What would be the profit if the community imports decrease by 91% at the time step 3?,model.addConstr(Pimp[2] == Pimp[2]*(100-91)/100),-26.111111111111114,model.addConstr(Pimp[2] == Pimp[2]*(100-91)/100),Optimization problem solved. The objective value is: -26.111111111111114,
+What would be the profit if the community imports increase by 4% at the time step 3?,model.addConstr(Pimp[2] == Pimp[2]*(100+4)/100),-26.111111111111114,model.addConstr(Pimp[2] == Pimp[2]*(100+4)/100),Optimization problem solved. The objective value is: -26.111111111111114,
+What would be the profit if the community imports increase by 51% at the time step 2?,model.addConstr(Pimp[1] == Pimp[1]*(100+51)/100),-26.111111111111114,model.addConstr(Pimp[1] == Pimp[1]*(100+51)/100),Optimization problem solved. The objective value is: -26.111111111111114,
+What would be the profit if the community imports increase by 38% at the time step 3?,model.addConstr(Pimp[2] == Pimp[2]*(100+38)/100),-26.111111111111114,"# Profit if the community imports increase by 38% at time step 3
+model.addConstr(Pimp[2] == Pimp[2]*(100+38)/100) ",,
+What would be the profit if the community imports increase by 74% at the time step 1?,model.addConstr(Pimp[0] == Pimp[0]*(100+74)/100),-26.111111111111114,model.addConstr(Pimp[0] == Pimp[0]*(100+74)/100),,
+What would be the profit if the community imports increase by 79% at the time step 2?,model.addConstr(Pimp[1] == Pimp[1]*(100+79)/100),-26.111111111111114,model.addConstr(Pimp[1] == Pimp[1]*(1 + 0.79)),,
+What would be the profit if the community exports decrease by 78%?,model.addConstrs(Pexp[t] == Pexp[t]*(100-78)/100 for t in range(len(Pimp))),"inf_or_unbound
+Conflicting Constraints:
+['R0', 'R1', 'R2', 'R15', 'R16', 'R17', 'R18', 'R19', 'R20', 'R21', 'R22', 'R23', 'R24', 'R25', 'R26', 'R27', 'R28', 'R29', 'R30', 'R31', 'R32', 'R33', 'R34', 'R35', 'R36', 'R37', 'R38', 'R47', 'R48', 'R49', 'R50', 'R135', 'R136', 'R137']",model.addConstrs(Pexp[t] == Pexp[t]*(100-78)/100 for t in range(len(Pexp))),,
+What would be the profit if the community exports decrease by 41%?,model.addConstrs(Pexp[t] == Pexp[t]*(100-41)/100 for t in range(len(Pimp))),"inf_or_unbound
+Conflicting Constraints:
+['R0', 'R1', 'R2', 'R15', 'R16', 'R17', 'R18', 'R19', 'R20', 'R21', 'R22', 'R23', 'R24', 'R25', 'R26', 'R27', 'R28', 'R29', 'R30', 'R31', 'R32', 'R33', 'R34', 'R35', 'R36', 'R37', 'R38', 'R47', 'R48', 'R49', 'R50', 'R135', 'R136', 'R137']","# Update the constraint to decrease the community exports by 41%
+model.addConstrs(Pexp[t] == Pexp[t]*(100-41)/100 for t in range(len(Pexp)))",,Sorry. I cannot answer your question.

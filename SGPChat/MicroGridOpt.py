@@ -79,7 +79,7 @@ class MicroGridOptAgent(AssistantAgent):
                  doc_str="",
                  example_qa_coder="",
                  example_qa_interpreter="",
-                 debug_times=3,
+                 debug_times=2,
                  **kwargs):
         """
         Args:
@@ -177,9 +177,9 @@ class MicroGridOptAgent(AssistantAgent):
             #print(src_code)
             execution_rst = _run_with_exec(src_code)
             self.execution_out = str(execution_rst)
-            print("PRINTING THE SELF")
-            print(self.execution_out)
-            print(colored(str(execution_rst), "yellow"))
+            #print("PRINTING THE SELF")
+            #print(self.execution_out)
+            #print(colored(str(execution_rst), "yellow"))
             if type(execution_rst) in [str, int, float]:
                 # we successfully run the code and get the result
                 self._success = True
