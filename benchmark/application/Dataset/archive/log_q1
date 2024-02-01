@@ -1,0 +1,39 @@
+
+Gurobi 11.0.0 (win64) logging started Sun Jan 14 16:26:08 2024
+
+Set parameter LogFile to value "C:/Users/nermi/OneDrive/Documents/SGP-Chat/benchmark/application/Dataset/archive/log_q1"
+Set parameter LogToConsole to value 0
+Gurobi Optimizer version 11.0.0 build v11.0.0rc2 (win64 - Windows 10.0 (19045.2))
+
+CPU model: Intel(R) Core(TM) m3-7Y30 CPU @ 1.00GHz, instruction set [SSE2|AVX|AVX2]
+Thread count: 2 physical cores, 4 logical processors, using up to 4 threads
+
+Optimize a model with 64 rows, 70 columns and 225 nonzeros
+Model fingerprint: 0x9bbb9224
+Variable types: 55 continuous, 15 integer (15 binary)
+Coefficient statistics:
+  Matrix range     [1e-01, 1e+07]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 5e+03]
+  RHS range        [7e+01, 1e+07]
+Found heuristic solution: objective -23.5000000
+Presolve removed 25 rows and 21 columns
+Presolve time: 0.03s
+Presolved: 39 rows, 49 columns, 119 nonzeros
+Variable types: 37 continuous, 12 integer (12 binary)
+
+Root relaxation: objective -2.611111e+01, 24 iterations, 0.02 seconds (0.00 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+*    0     0               0     -26.1111111  -26.11111  0.00%     -    0s
+
+Explored 1 nodes (24 simplex iterations) in 0.10 seconds (0.00 work units)
+Thread count was 4 (of 4 available processors)
+
+Solution count 3: -26.1111 -26.1111 -23.5 
+No other solutions better than -26.1111
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective -2.611111111111e+01, best bound -2.611111111111e+01, gap 0.0000%

@@ -1,0 +1,413 @@
+Question,GT Code,GT Objective Value,SGP Code,SGP Objective Value,SGP Interpretation
+What would happen if prosumer 2 shifts 65% of their load at timestep 2 to timestep 2+1,Pcons[1][1] = Pcons[1][1]*(100-65)/100 \nPcons[1+1][1] = Pcons[1+1][1] + Pcons[1][1]* 65/100,-27.211111111111116,"# Calculate the percentage of the load at the second time step
+percentage_of_load = 0.65 * Pcons[1][1]
+
+# Decrease the load at the second time step
+Pcons[1][1] -= percentage_of_load
+
+# Increase the load at the third time step
+Pcons[2][1] += percentage_of_load",Optimization problem solved. The objective value is: -26.211111111111116,
+What would happen if prosumer 2 shifts 44% of their load at timestep 1 to timestep 1+1,Pcons[0][1] = Pcons[0][1]*(100-44)/100 \nPcons[0+1][1] = Pcons[0+1][1] + Pcons[0][1]* 44/100,-26.81111111111111,"# Define the shift amount
+shift = 0.44 * Pcons[1, 2]  # 44% of prosumer 2's load at timestep 1
+
+# Adjust the consumption values at timestep 1 and timestep 1+1 
+Pcons[1, 2] = Pcons[1, 2] * (1 - 0.44)
+Pcons[2, 2] = Pcons[2, 2] + shift",Optimization problem solved. The objective value is: -26.211111111111112,
+What would happen if prosumer 3 shifts 27% of their load at timestep 1 to timestep 1+1,Pcons[0][2] = Pcons[0][2]*(100-27)/100 \nPcons[0+1][2] = Pcons[0+1][2] + Pcons[0][2]* 27/100,-26.41111111111112,"# Calculate 27% of the load of prosumer 3 at timestep 1
+shift_load = 0.27 * Pcons[1, 2]
+
+# Reduce the load of prosumer 3 at timestep 1 by shifting load
+Pcons[1, 2] -= shift_load
+
+# Increase the load of prosumer 3 at timestep 2 by the shifted load
+Pcons[2, 2] += shift_load",Optimization problem solved. The objective value is: -26.21111111111111,
+What would happen if prosumer 2 changes 26% of their load at timestep 2 to timestep 2+1,Pcons[1][1] = Pcons[1][1]*(100-26)/100 \nPcons[1+1][1] =Pcons[1+1][1] + Pcons[1][1]*26/100,-26.41111111111112,"# OPTIGUIDE DATA CODE GOES HERE
+Pcons[1, 2] -= Pcons[1, 2] * 0.26  # decrease load of prosumer 2 at timestep 2
+Pcons[2, 2] += Pcons[1, 2] * 0.26  # increase load of prosumer 2 at timestep 2+1
+model.update()",Optimization problem solved. The objective value is: -26.41111111111111,
+What would happen if prosumer 3 changes 12% of their load at timestep 2 to timestep 2+1,Pcons[1][2] = Pcons[1][2]*(100-12)/100 \nPcons[1+1][2] =Pcons[1+1][2] + Pcons[1][2]*12/100,-26.211111111111116,"# Apply 12% change to prosumer 3 (considered as 2 in zero based index) load from timestep 2 to timestep 1
+Pcons_next = Pcons.copy()
+Pcons_next[2, 2] *= 0.88   # reduce timestep 2 load by 12%
+Pcons_next[1, 2] += Pcons[2, 2] * 0.12  # add 12% of timestep 2 load to timestep 1 
+
+# Add new data to the model
+model.addMConstrs(Pcons_next, Pimp).setValue(0)
+
+# We need to update the energy balance constraints to use the new values
+model.remove(model.getConstrs())
+for t in range(m):
+    model.addConstr(
+        gp.quicksum(Pprod[t, i] for i in range(n)) - Bch.sum(t, '*') + Bdis.sum(t, '*') + Pimp[t] - Pexp[t] ==
+        np.sum(Pcons_next[t]))
+
+# No import and export at the same time constraint
+for t in range(m):
+    model.addConstr(Pimp[t] <= (1 - b[t]) * max_imp)
+    model.addConstr(Pexp[t] <= b[t] * max_exp)
+    model.addConstr(Pimp[t] >= 0)
+    model.addConstr(Pexp[t] >= 0)
+
+# Adding battery constraints again after they were removed
+model.addConstrs(SoE[0, i] == SoEprev[i] for i in range(n))  # initialize the state of Energy of the battery
+model.addConstrs(SoEnext[t, i] == SoE[t, i] + (Bch[t, i] - Bdis[t, i]) * Dt for t in range(m) for i in range(n))
+model.addConstrs(SoE[t, i] == SoEnext[t - 1, i] for t in range(1, m - 1) for i in range(n))
+model.addConstrs(SoE[m - 1, i] == SoEnext[m - 2, i] for i in range(n))
+
+model.addConstrs(SoEnext[t, i] <= SoEmax[t] for t in range(m) for i in range(n))
+model.addConstrs(SoEnext[t, i] >= SoEmin[t] for t in range(m) for i in range(n))
+
+model.addConstrs(Bch[t, i] >= 0 for t in range(m) for i in range(n))
+model.addConstrs(Bch[t, i] <= Kch for t in range(m) for i in range(n))
+
+model.addConstrs(Bdis[t, i] >= 0 for t in range(m) for i in range(n))
+model.addConstrs(Bdis[t, i] <= Kdis for t in range(m) for i in range(n))
+
+model.addConstrs(Bch[t, i] <= (1 - c[t, i]) * 100000 for t in range(m) for i in range(n))
+model.addConstrs(Bdis[t, i] <= c[t, i] * 100000 for t in range(m) for i in range(n))
+
+model.optimize()
+
+m = model",'gurobipy.Model' object has no attribute 'addMConstrs',
+What would happen if prosumer 4 changes 81% of their load at timestep 2 to timestep 2+1,Pcons[1][3] = Pcons[1][3]*(100-81)/100 \nPcons[1+1][3] =Pcons[1+1][3] + Pcons[1][3]*81/100,-27.91111111111112,"# Adjusting prosumer 4's load
+Pcons[2][3] -= 0.81 * Pcons[2][3]
+Pcons[1][3] += 0.81 * Pcons[2][3]
+
+# Setting up the model again
+model = gp.Model('model')
+
+# Recreating the former variables
+Pimp = model.addVars(m, name=""Pimp"")  # Imported Power
+Pexp = model.addVars(m, name=""Pexp"")  # Exported Power
+Bch = model.addVars(m, n, name=""Bch"")  # Charge the battery
+Bdis = model.addVars(m, n, name=""Bdis"")  # Discharge the battery
+SoE = model.addVars(m, n, name=""SoE"")  # State of Energy (of the battery)
+b = model.addVars(m, vtype=GRB.BINARY, name=""b"")  # binary variable
+c = model.addVars(m, n, vtype=GRB.BINARY, name=""c"")  # binary variable
+SoEnext = model.addVars(m, n, name=""SoEnext"")  # State of Energy of the battery in the next time timeslot
+
+# Recreating the former constraints
+for t in range(m):
+    model.addConstr(
+        gp.quicksum(Pprod[t, i] for i in range(n)) - Bch.sum(t, '*') + Bdis.sum(t, '*') + Pimp[t] - Pexp[t] ==
+        np.sum(Pcons[t]))
+
+for t in range(m):
+    model.addConstr(Pimp[t] <= (1 - b[t]) * max_imp)
+    model.addConstr(Pexp[t] <= b[t] * max_exp)
+    model.addConstr(Pimp[t] >= 0)
+    model.addConstr(Pexp[t] >= 0)
+    
+# Then, recreate the other former constraints and objective function and re-optimise the model.
+
+model.optimize()",Optimization problem solved. The objective value is: 0.0,
+What would happen if prosumer 1 changes 83% of their electric car load at timestep 1 to timestep 1+1,Pcons[0][0] = Pcons[0][0]*(100-83)/100 \nPcons[0+1][0] =Pcons[0+1][0] + Pcons[0][0]*83/100,-27.01111111111112,"# define modified load (83% moved from timestep 1 to timestep 1 + 1)
+modified_Pcons = Pcons.copy()
+modified_Pcons[1,0] -= 0.83 * Pcons[1,0]  # reduce load at timestep 1
+modified_Pcons[2,0] += 0.83 * Pcons[1,0]  # increase load at timestep 1 + 1
+
+# Define the energy balance constraints that consider the modified loads
+for t in range(m):
+    model.addConstr(
+        gp.quicksum(Pprod[t, i] for i in range(n)) - Bch.sum(t, '*') + Bdis.sum(t, '*') + Pimp[t] - Pexp[t] ==
+        np.sum(modified_Pcons[t]))
+
+# solve the model
+model.optimize()","inf_or_unbound
+Conflicting Constraints:
+['R1', 'R136']",
+What would happen if prosumer 2 changes 57% of their electric car load at timestep 1 to timestep 1+1,Pcons[0][1] = Pcons[0][1]*(100-57)/100 \nPcons[0+1][1] =Pcons[0+1][1] + Pcons[0][1]*57/100,-27.31111111111111,"# Change of load for Prosumer 2
+change_percentage = 0.57
+old_load_timestep_1 = Pcons[1,1]
+new_load_timestep_2 = old_load_timestep_1 * change_percentage
+Pcons[1,1] -= new_load_timestep_2
+Pcons[2,1] += new_load_timestep_2",Optimization problem solved. The objective value is: -26.211111111111112,
+What would happen if prosumer 3 changes 100% of their electric car load at timestep 2 to timestep 2+1,Pcons[1][2] = Pcons[1][2]*(100-100)/100 \nPcons[1+1][2] =Pcons[1+1][2] + Pcons[1][2]*100/100,-28.111111111111114,"# Adjust the consumer power value for prosumer 3
+Pcons[1, 2] -= 100 # shift 100% of the load from timestep 2 (index 1)
+Pcons[1+1, 2] += 100 # shift 100% of the load from timestep 2 to timestep 2+1 (index 2)",Optimization problem solved. The objective value is: -26.111111111111114,
+What's the new cost of the community if prosumer 1 shifts 67% of their load at timestep 2 to timestep 2+1,Pcons[1][0] = Pcons[1][0]*(100-67)/100 \nPcons[1+1][0] =Pcons[1+1][0] + Pcons[1][0]*67/100,-26.811111111111117,"# Create a new copy of the Pcons array
+Pcons_new = Pcons.copy()
+# Shifting 67% of prosumer 1's load at timestep 2 to timestep 2+1
+shift_value = 0.67 * Pcons[2, 0]
+Pcons_new[2, 0] -= shift_value
+Pcons_new[2, 0] = max(0, Pcons_new[2, 0])
+Pcons_new[0, 0] += shift_value
+
+# Add new energy balance constraints with the updated Pcons values
+for t in range(m):
+     model.addConstr(
+        gp.quicksum(Pprod[t, i] for i in range(n)) - Bch.sum(t, '*') + Bdis.sum(t, '*') + Pimp[t] - Pexp[t] ==
+        np.sum(Pcons_new[t]))
+
+# Resolve the model
+model.optimize()","inf_or_unbound
+Conflicting Constraints:
+['R2', 'R137']",
+What's the new cost of the community if prosumer 4 shifts 30% of their load at timestep 1 to timestep 1+1,Pcons[0][3] = Pcons[0][3]*(100-30)/100 \nPcons[0+1][3] =Pcons[0+1][3] + Pcons[0][3]*30/100,-26.41111111111111,"# Corrected version
+# Shifting 30% of prosumer 4's load at timestep 1 to timestep 1+1
+load_shift_proportion = 0.3
+prosumer_idx = 3  # prosumer 4's index is 3 as index starts from 0 
+timestep_idx = 0  # timestep 1's index is 0 as index starts from 0
+
+# Store the original value to avoid compounding the 30% decrease over multiple runs of the code
+original_load = Pcons[timestep_idx, prosumer_idx].X
+
+Pcons[timestep_idx, prosumer_idx] = original_load - load_shift_proportion * original_load
+Pcons[timestep_idx+1, prosumer_idx] += load_shift_proportion * original_load
+
+# reinitialize the model
+model.reset()
+
+# re-run the optimization with new load profiles
+model.optimize()
+
+# print the new objective value (community cost after load shifting)
+print('Updated Objective value: ', model.objVal)",'numpy.int32' object has no attribute 'X',
+What's the new cost of the community if prosumer 3 shifts 31% of their load at timestep 2 to timestep 2+1,Pcons[1][2] = Pcons[1][2]*(100-31)/100 \nPcons[1+1][2] =Pcons[1+1][2] + Pcons[1][2]*31/100,-26.41111111111112,"# Updating prosumer 3 load at timestep 1 by deducting 31%
+Pcons[1,2] = Pcons[1,2] - (0.31 * Pcons[1,2])
+
+# Updating prosumer 3 load at timestep 2 by adding the deducted value from timestep 1
+Pcons[2,2] = Pcons[2,2] + (0.31 * Pcons[1,2])
+
+# Now solve the optimization problem again after the load shifting
+model.optimize()
+new_obj_value = model.ObjVal
+print(""New objective value is: "", new_obj_value)",Optimization problem solved. The objective value is: -26.41111111111111,
+What's the new state of battery of prosumer 3 if the prosumer shifts 30% of their load at timestep 1 to timestep 1+1,Pcons[0][2] = Pcons[0][2]*(100-30)/100 \nPcons[0+1][2] =Pcons[0+1][2] + Pcons[0][2]*30/100,-26.311111111111117,"t = 1  
+i = 2  # since prosumers are 0-indexed
+load_shift_fraction = 0.3  
+load_shift = Pcons[t, i] * load_shift_fraction
+
+# Shift the load
+Pcons[t, i] -= load_shift
+Pcons[t+1, i] += load_shift
+
+# Re-optimize the model
+model.optimize()
+
+# Get the new state of energy
+new_SoE = SoE[t, i].X
+new_SoE
+",Optimization problem solved. The objective value is: -26.11111111111111,
+What's the new state of battery of prosumer 4 if the prosumer shifts 59% of their load at timestep 1 to timestep 1+1,Pcons[0][3] = Pcons[0][3]*(100-59)/100 \nPcons[0+1][3] =Pcons[0+1][3] + Pcons[0][3]*59/100,-27.111111111111114,"# User is asking to shift the load from timestep 1 to timestep 2 (which is t=1 in our Python code because Python starts indexing at 0)
+# So first let's find the load of prosumer 4 at time step 1
+load_prosumer4_t1 = Pcons[1,3] # Remember that Python starts indexing at 0, so prosumer 4 corresponds to index 3
+
+# Now the user wants to shift 59% of this load to the next time step, so let's calculate this
+load_shifted = 0.59 * load_prosumer4_t1
+
+# Subtract this load from the original load at time step 1
+Pcons[1,3] -= load_shifted
+
+# And add it to the load at the next time step
+Pcons[2,3] += load_shifted
+
+# Now we need to solve the model again to find the updated state of energy for prosumer 4
+model.optimize()
+
+# Finally, we retrieve and print the updated state of energy for prosumer 4 at time step 1 and 2
+new_soe_prosumer4_t1 = SoE[1,3].x # New state of energy at time step 1
+new_soe_prosumer4_t2 = SoE[2,3].x # New state of energy at time step 2
+
+new_soe_prosumer4_t1, new_soe_prosumer4_t2",Optimization problem solved. The objective value is: -26.211111111111116,
+What's the new state of battery of prosumer 2 if the prosumer shifts 25% of their load at timestep 2 to timestep 2+1,Pcons[1][1] = Pcons[1][1]*(100-25)/100 \nPcons[1+1][1] =Pcons[1+1][1] + Pcons[1][1]*25/100,-26.311111111111117,"# Calculate the shifted portion of consumption
+shifted_consumption = 0.25 * Pcons[2,2]
+
+# Reduce the consumption at timestep 2 by the shifted amount
+Pcons[2,2] -= shifted_consumption
+
+# Increase the consumption at timestep 1 by the shifted amount
+Pcons[1,2] += shifted_consumption
+
+# Remove old energy balance constraints for timestep 1 and 2
+model.remove(model.getConstrByName(""c0""))
+model.remove(model.getConstrByName(""c1""))
+
+# Recompute the energy balance constraint for timestep 1 and 2
+
+# For timestep 1
+model.addConstr(
+    gp.quicksum(Pprod[1, i] for i in range(n)) - Bch.sum(1, '*') + Bdis.sum(1, '*') + Pimp[1] - Pexp[1] ==
+    np.sum(Pcons[1]), name=""c0"" )
+
+# For timestep 2
+model.addConstr(
+    gp.quicksum(Pprod[2, i] for i in range(n)) - Bch.sum(2, '*') + Bdis.sum(2, '*') + Pimp[2] - Pexp[2] ==
+    np.sum(Pcons[2]), name=""c1"" )
+
+# Solve the model again
+model.optimize()
+
+# Print the new state of energy of prosumer 2 at timestep 2
+print(""New state of energy of prosumer 2 at timestep 2: "", SoE[2,2].x)",No constraint names available to index,
+What's the new state of battery of the community if prosumer 4 shifts 65% of their load at timestep 2 to timestep 2+1,Pcons[1][3] = Pcons[1][3]*(100-65)/100 \nPcons[1+1][3] =Pcons[1+1][3] + Pcons[1][3]*65/100,-27.311111111111117,"from gurobipy import GRB
+import numpy as np
+
+shift_proportion = 0.65  # define the shift proportion, 65%
+prosumer_idx = 3  # the prosumer index in Python is 3 (prosumer 4-1)
+
+# shift the load
+Pcons_shifted = np.copy(Pcons)  # create a copy of the Pcons array
+Pcons_shifted[1, prosumer_idx] -= Pcons[1, prosumer_idx] * shift_proportion  # decrease the load at timestep 2
+Pcons_shifted[2, prosumer_idx] += Pcons[1, prosumer_idx] * shift_proportion  # increase the load at timestep 3
+
+# add this shift in demand as constraints to the model
+for t in range(m):
+    model.addConstr(
+        gp.quicksum(Pprod[t, i] for i in range(n)) - Bch.sum(t, '*') + Bdis.sum(t, '*') + Pimp[t] - Pexp[t] ==
+        np.sum(Pcons_shifted[t]))
+
+# Do not forget to update and solve your model again
+model.update()
+model.optimize()","inf_or_unbound
+Conflicting Constraints:
+['R1', 'R136']",
+What's the new state of battery of the community if prosumer 3 shifts 30% of their load at timestep 2 to timestep 2+1,Pcons[1][2] = Pcons[1][2]*(100-30)/100 \nPcons[1+1][2] =Pcons[1+1][2] + Pcons[1][2]*30/100,-26.311111111111117,"# Define shift percentage and prosumer
+shift_percentage = 0.3
+prosumer = 3
+
+# Shift the load from timestep 2 to timestep 3
+Pcons[1,prosumer] = Pcons[1,prosumer]*(1-shift_percentage)
+Pcons[2,prosumer] = Pcons[2,prosumer] + Pcons[1,prosumer]*shift_percentage
+
+model.update()
+
+# Model is solved again after the update
+model.optimize()
+
+# Retrieve the new state of battery
+Soe = np.array([[SoE[t, i].x for i in range(n)] for t in range(m)])
+
+# Print the new state of battery
+print(""SoE after load shifting:"", Soe)",Optimization problem solved. The objective value is: -26.41111111111111,
+What's the new state of battery of the community if prosumer 3 shifts 54% of their load at timestep 1 to timestep 1+1,Pcons[0][2] = Pcons[0][2]*(100-54)/100 \nPcons[0+1][2] =Pcons[0+1][2] + Pcons[0][2]*54/100,-26.811111111111117,"# Define the amount of load shift
+load_shift = 0.54 * Pcons[1, 3]
+
+# Deduct the shifted load from timestep 1
+Pcons[1, 3] -= load_shift
+
+# Add the shifted load to timestep 2
+Pcons[2, 3] += load_shift
+
+# Solve the model again
+model.optimize()
+
+# Get new SoE for prosumer 3
+new_SoE = SoE[1, 3].X
+print('The new state of energy of prosumer 3 at timestep 2 is: ', new_SoE)",Optimization problem solved. The objective value is: -26.211111111111112,
+What's the new state of battery of the community if prosumer 1 shifts 100% of their load at 1 pm to 3 pm,Pcons[0][0] = Pcons[0][0]*(100-100)/100 \nPcons[2][0] =Pcons[2][0] + Pcons[0][0]*100/100,-27.11111111111112,"# First we need to shift 100% of the prosumer 1's load at 1 pm to 3 pm.
+Pcons[0][0] = 0   # Shift from 1 pm
+Pcons[2][0] += 10  # Shift to 3 pm
+
+# Recreate the model since modifying the data
+model.update()
+
+# Resolve the problem using Gurobi solver
+model.optimize()
+
+# Get the new state of battery for the prosumer 1
+new_soe_1 = SoE[2, 0].X
+
+new_soe_1",Optimization problem solved. The objective value is: -26.111111111111114,"After shifting 100% of the prosumer 1's load from 1 pm to 3 pm, the new state of energy (SoE) in the battery of prosumer 1 at 3pm is updated.
+
+The objective value is -26.111111111111114, which is similar to the original objective value -26.111111111111107. Since the number is negative, this indicates a profit. After removal of the negative sign to convert this to a profit, the value is 26.11 euro. This means the energy shifting of prosumer 1 does not change the community's profit. 
+
+Therefore, prosumer 1 can shift their load from 1 pm to 3 pm without affecting the community's total profit."
+What's the new state of battery of the community if prosumer 3 shifts 29% of their load at 1 pm to 3 pm,Pcons[0][2] = Pcons[0][2]*(100-29)/100 \nPcons[2][2] =Pcons[2][2] + Pcons[0][2]*29}/100,-26.311111111111117,"# convert 29% of load at 1pm to energy 
+shifted_energy = Pcons[0][2] * 0.29 * Dt  # convert power to energy
+
+# adjust prosumer 3's consumption at 1pm 
+Pcons[0][2] *= 0.71  # only 71% of load is consumed at 1pm 
+
+# add the shifted load to consumption at 3pm
+Pcons[2][2] += shifted_energy/Dt   # convert energy back to power 
+
+# OPTIGUIDE DATA CODE GOES HERE",Optimization problem solved. The objective value is: -26.21111111111111,"The new state of the battery was recalculated after shifting 29% of prosumer 3's load at 1pm to 3pm. 
+
+After the shift, the total profit from the Microgrid increases from €26.11 to €26.21. This means the shift in energy usage has made the microgrid more efficient, as it results in a higher profit.
+
+This outcome is logical because shifting load from a peak consumption period (1pm) to a less busy period (3pm) improves the load balance and makes better use of the available resources, like the solar panels and battery.
+
+Since the optimization problem was successfully solved without throwing any errors, it is evident that no constraints were violated in this shifted scenario. This includes energy balance constraints, import/export balance, as well as battery charge and discharge limits."
+hat's the new state of battery of the community if prosumer 2 shifts 10% of their load at 2 pm to 3 pm,Pcons[1][1] = Pcons[1][1]*(100-10)/100 \nPcons[2][1] =Pcons[2][1] + Pcons[1][1]*10/100,-26.211111111111116,"# Let's get the previous state of energy for prosumer 2
+SoEprev_2 = SoEprev[2]
+
+# Compute the shift in load
+load_shift = 0.1 * Pcons[1, 2]  # Shift from 2 pm to 3 pm
+
+# Update the consumption at 2 pm (t=1 in the code) and 3 pm (t=2 in the code) for prosumer 2
+Pcons[1, 2] -= load_shift
+Pcons[2, 2] += load_shift
+
+# Now update the energy state for prosumer 2 at 2 pm and 3 pm
+SoE[1, 2] = SoEprev_2 + (Bch[1, 2] - Bdis[1, 2]) * Dt
+SoE[2, 2] = SoE[1, 2] + (Bch[2, 2] - Bdis[2, 2]) * Dt
+
+# The new state of energy of the battery at 3 pm for prosumer 2
+SoEnext[2, 2] = SoE[2, 2]",Optimization problem solved. The objective value is: -25.72222222222222,"Sure, let's interpret the results.
+
+In the original model, we have the objective value as -26.111111111111107, which implies a profit of €26.111111111111107 for the community microgrid as per the energy management scheme. 
+
+However, when prosumer 2 shifted 10% of their load from 2 pm to 3 pm, the objective value, after rerunning the optimization model, comes out to be -25.72222222222222. This implies a profit of €25.72222222222222. 
+
+Comparing these two results, we can see that the profit of the community microgrid decreases by around €0.389 when such a shift happens. From an economic point of view, this indicates that shifting load in this manner is not beneficial for the community microgrid, as it leads to reduced profit. 
+
+The model appears to be feasible and there is no violation of constraints reported which suggests that all conditions for energy management are being met effectively. 
+
+As a conclusion, while shifting 10% load from 2 pm to 3 pm by prosumer 2 changes the state of energy in the battery system, it results in a decrease in overall profit for the community microgrid system under the given conditions and energy pricing system. It would be more optimal to avoid such a shift for better economic outcomes."
+What's the new state of battery of the community if prosumer 4 shifts 47% of their load at 2 pm to 3 pm,Pcons[1][3] = Pcons[1][3]*(100-47)/100 \nPcons[2][3] =Pcons[2][3] + Pcons[1][3]*47/100,-26.71111111111112,"# Calculate new consumption of prosumer 4 at 2pm and 3pm
+Pcons_new = Pcons.copy()
+Pcons_new[1,3] -= 0.47 * Pcons[1,3]
+Pcons_new[2,3] += 0.47 * Pcons[1,3]
+
+# Remove the previous energy balance constraints
+for i in range(m):
+    model.remove(model.getConstrs()[i])
+
+# Add the updated energy balance constraints with new consumption values
+for t in range(m):
+    model.addConstr(
+        gp.quicksum(Pprod[t, i] for i in range(n)) - Bch.sum(t, '*') + Bdis.sum(t, '*') + Pimp[t] - Pexp[t] ==
+        np.sum(Pcons_new[t]))
+
+# Re-optimize the model
+model.optimize()
+
+# Calculate new SoE for prosumer 4 at 3pm
+SoE_new = SoEnext[2,3].X
+SoE_new",list index out of range,Sorry. I cannot answer your question.
+What's the new state of battery of the community if prosumer 2 shifts 6% of their load at 2 pm to 3 pm,Pcons[1][1] = Pcons[1][1]*(100-6)/100 \nPcons[2][1] =Pcons[2][1] + Pcons[1][1]*6/100,-26.21111111111112,"# Assuming that prosumer 2 shifts 6% of their load at 2 pm to 3 pm
+# Firstly, let us get the prosumer's load at 2 pm
+prosumer2_load_at_2pm = Pcons[1, 1]  # check load at 2pm (t = 1)
+
+# Calculate the amount of load to be shifted
+load_shifted = 0.06 * prosumer2_load_at_2pm
+
+# Update the load at 2 pm and 3 pm
+Pcons[1, 1] -= load_shifted
+Pcons[2, 1] += load_shifted
+
+# MISPLACED COMMENT
+# Now we evaluate the new state of energy of the battery of the community using the updated load
+
+# Define decision variables again to reflect the new changes
+Pimp = model.addVars(m, name=""Pimp"")  # Imported Power
+Pexp = model.addVars(m, name=""Pexp"")  # Exported Power
+Bch = model.addVars(m, n, name=""Bch"")  # Charge the battery
+Bdis = model.addVars(m, n, name=""Bdis"")  # Discharge the battery
+SoE = model.addVars(m, n, name=""SoE"")  # State of Energy (of the battery)
+b = model.addVars(m, vtype=GRB.BINARY, name=""b"")  # binary variable
+c = model.addVars(m, n, vtype=GRB.BINARY, name=""c"")  # binary variable
+SoEnext = model.addVars(m, n, name=""SoEnext"")  # State of Energy of the battery in the next time timeslot
+
+# Evaluate the model again with updated load of cons[1, 1] and Pcons[2, 1]
+model.optimize()
+
+# Print the new state of energy of the community
+new_SoE = np.array([[SoE[t, i].x for i in range(n)] for t in range(m)])
+print(""New SoE:"", new_SoE)",Optimization problem solved. The objective value is: -26.211111111111112,"The optimization problem is solved successfully. After prosumer 2 shifted 6% of their load from 2 pm to 3 pm, the achieved profit has increased from €26.11 to €26.21. This indicates a better energy management after the load shifting, resulting in €0.10 additional profit for the community. 
+
+Remember that the state of energy (SoE) in the battery storage of the community also changed but the specific values were not shared in this output. Please run the provided snippet to see the changes in the state of energy.
+
+It should be noted that a positive objective value would reflect a cost while a negative one represents a profit. Here, the improved objective value suggests that load shifting has indeed resulted in increased benefits for the community.
+
+This could be a useful strategy if prosumer 2 can flexibly move their energy demand around. However, it's important that these shifts align well with the overall energy production, consumption patterns and do not violate any established constraints or bounds in the optimization problem."

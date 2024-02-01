@@ -1,0 +1,329 @@
+
+Gurobi 11.0.0 (win64) logging started Sun Jan 14 16:27:14 2024
+
+Set parameter LogFile to value "C:/Users/nermi/OneDrive/Documents/SGP-Chat/benchmark/application/Dataset/archive/log_q2"
+Set parameter LogToConsole to value 0
+Gurobi Optimizer version 11.0.0 build v11.0.0rc2 (win64 - Windows 10.0 (19045.2))
+
+CPU model: Intel(R) Core(TM) m3-7Y30 CPU @ 1.00GHz, instruction set [SSE2|AVX|AVX2]
+Thread count: 2 physical cores, 4 logical processors, using up to 4 threads
+
+Optimize a model with 64 rows, 70 columns and 225 nonzeros
+Model fingerprint: 0x18b6c439
+Variable types: 55 continuous, 15 integer (15 binary)
+Coefficient statistics:
+  Matrix range     [1e-01, 1e+07]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 5e+03]
+  RHS range        [7e+01, 1e+07]
+Presolve removed 13 rows and 13 columns
+Presolve time: 0.00s
+
+Explored 0 nodes (0 simplex iterations) in 0.00 seconds (0.00 work units)
+Thread count was 1 (of 4 available processors)
+
+Solution count 0
+
+Model is infeasible or unbounded
+Best objective -, best bound -, gap -
+
+Gurobi 11.0.0 (win64) logging started Sun Jan 14 16:29:44 2024
+
+Set parameter LogFile to value "C:/Users/nermi/OneDrive/Documents/SGP-Chat/benchmark/application/Dataset/archive/log_q2"
+Set parameter LogToConsole to value 0
+Gurobi Optimizer version 11.0.0 build v11.0.0rc2 (win64 - Windows 10.0 (19045.2))
+
+CPU model: Intel(R) Core(TM) m3-7Y30 CPU @ 1.00GHz, instruction set [SSE2|AVX|AVX2]
+Thread count: 2 physical cores, 4 logical processors, using up to 4 threads
+
+Optimize a model with 64 rows, 70 columns and 225 nonzeros
+Model fingerprint: 0x18b6c439
+Variable types: 55 continuous, 15 integer (15 binary)
+Coefficient statistics:
+  Matrix range     [1e-01, 1e+07]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 5e+03]
+  RHS range        [7e+01, 1e+07]
+Presolve removed 13 rows and 13 columns
+Presolve time: 0.03s
+
+Explored 0 nodes (0 simplex iterations) in 0.05 seconds (0.00 work units)
+Thread count was 1 (of 4 available processors)
+
+Solution count 0
+
+Model is infeasible or unbounded
+Best objective -, best bound -, gap -
+
+Warning: unable to write requested result file 'C:/Users/nermi/OneDrive/Documents/SGP-Chat/benchmark/application/Dataset/archive/sol_log_q2.sol'
+
+
+Gurobi 11.0.0 (win64) logging started Sun Jan 14 16:34:02 2024
+
+Set parameter LogFile to value "C:/Users/nermi/OneDrive/Documents/SGP-Chat/benchmark/application/Dataset/archive/log_q2"
+Gurobi Optimizer version 11.0.0 build v11.0.0rc2 (win64 - Windows 10.0 (19045.2))
+
+CPU model: Intel(R) Core(TM) m3-7Y30 CPU @ 1.00GHz, instruction set [SSE2|AVX|AVX2]
+Thread count: 2 physical cores, 4 logical processors, using up to 4 threads
+
+Optimize a model with 64 rows, 70 columns and 225 nonzeros
+Model fingerprint: 0x18b6c439
+Variable types: 55 continuous, 15 integer (15 binary)
+Coefficient statistics:
+  Matrix range     [1e-01, 1e+07]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 5e+03]
+  RHS range        [7e+01, 1e+07]
+Presolve removed 13 rows and 13 columns
+Presolve time: 0.02s
+
+Explored 0 nodes (0 simplex iterations) in 0.06 seconds (0.00 work units)
+Thread count was 1 (of 4 available processors)
+
+Solution count 0
+
+Model is infeasible or unbounded
+Best objective -, best bound -, gap -
+
+Warning: unable to write requested result file 'C:/Users/nermi/OneDrive/Documents/SGP-Chat/benchmark/application/Dataset/archive/sol_log_q2.sol'
+
+
+Gurobi 11.0.0 (win64) logging started Sun Jan 14 16:38:11 2024
+
+Set parameter LogFile to value "C:/Users/nermi/OneDrive/Documents/SGP-Chat/benchmark/application/Dataset/archive/log_q2"
+Gurobi Optimizer version 11.0.0 build v11.0.0rc2 (win64 - Windows 10.0 (19045.2))
+
+CPU model: Intel(R) Core(TM) m3-7Y30 CPU @ 1.00GHz, instruction set [SSE2|AVX|AVX2]
+Thread count: 2 physical cores, 4 logical processors, using up to 4 threads
+
+Optimize a model with 64 rows, 70 columns and 225 nonzeros
+Model fingerprint: 0x18b6c439
+Variable types: 55 continuous, 15 integer (15 binary)
+Coefficient statistics:
+  Matrix range     [1e-01, 1e+07]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 5e+03]
+  RHS range        [7e+01, 1e+07]
+Presolve removed 13 rows and 13 columns
+Presolve time: 0.00s
+
+Explored 0 nodes (0 simplex iterations) in 0.01 seconds (0.00 work units)
+Thread count was 1 (of 4 available processors)
+
+Solution count 0
+
+Model is infeasible or unbounded
+Best objective -, best bound -, gap -
+
+Warning: unable to write requested result file 'C:/Users/nermi/OneDrive/Documents/SGP-Chat/benchmark/application/Dataset/archive/sol_log_q2.sol'
+
+
+Gurobi 11.0.0 (win64) logging started Sun Jan 14 16:43:10 2024
+
+Set parameter LogFile to value "C:/Users/nermi/OneDrive/Documents/SGP-Chat/benchmark/application/Dataset/archive/log_q2"
+Gurobi Optimizer version 11.0.0 build v11.0.0rc2 (win64 - Windows 10.0 (19045.2))
+
+CPU model: Intel(R) Core(TM) m3-7Y30 CPU @ 1.00GHz, instruction set [SSE2|AVX|AVX2]
+Thread count: 2 physical cores, 4 logical processors, using up to 4 threads
+
+Optimize a model with 64 rows, 70 columns and 225 nonzeros
+Model fingerprint: 0x18b6c439
+Variable types: 55 continuous, 15 integer (15 binary)
+Coefficient statistics:
+  Matrix range     [1e-01, 1e+07]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 5e+03]
+  RHS range        [7e+01, 1e+07]
+Presolve removed 13 rows and 13 columns
+Presolve time: 0.02s
+
+Explored 0 nodes (0 simplex iterations) in 0.06 seconds (0.00 work units)
+Thread count was 1 (of 4 available processors)
+
+Solution count 0
+
+Model is infeasible or unbounded
+Best objective -, best bound -, gap -
+
+Warning: unable to write requested result file 'C:/Users/nermi/OneDrive/Documents/SGP-Chat/benchmark/application/Dataset/archive/sol_log_q2.sol'
+
+
+Gurobi 11.0.0 (win64) logging started Sun Jan 14 16:44:50 2024
+
+Set parameter LogFile to value "C:/Users/nermi/OneDrive/Documents/SGP-Chat/benchmark/application/Dataset/archive/log_q2"
+Gurobi Optimizer version 11.0.0 build v11.0.0rc2 (win64 - Windows 10.0 (19045.2))
+
+CPU model: Intel(R) Core(TM) m3-7Y30 CPU @ 1.00GHz, instruction set [SSE2|AVX|AVX2]
+Thread count: 2 physical cores, 4 logical processors, using up to 4 threads
+
+Optimize a model with 64 rows, 70 columns and 225 nonzeros
+Model fingerprint: 0x18b6c439
+Variable types: 55 continuous, 15 integer (15 binary)
+Coefficient statistics:
+  Matrix range     [1e-01, 1e+07]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 5e+03]
+  RHS range        [7e+01, 1e+07]
+Presolve removed 13 rows and 13 columns
+Presolve time: 0.03s
+
+Explored 0 nodes (0 simplex iterations) in 0.05 seconds (0.00 work units)
+Thread count was 1 (of 4 available processors)
+
+Solution count 0
+
+Model is infeasible or unbounded
+Best objective -, best bound -, gap -
+
+Warning: unable to write requested result file 'C:/Users/nermi/OneDrive/Documents/SGP-Chat/benchmark/application/Dataset/archive/sol_log_q2.sol'
+
+
+Gurobi 11.0.0 (win64) logging started Sun Jan 14 16:45:52 2024
+
+Set parameter LogFile to value "C:/Users/nermi/OneDrive/Documents/SGP-Chat/benchmark/application/Dataset/archive/log_q2"
+Gurobi Optimizer version 11.0.0 build v11.0.0rc2 (win64 - Windows 10.0 (19045.2))
+
+CPU model: Intel(R) Core(TM) m3-7Y30 CPU @ 1.00GHz, instruction set [SSE2|AVX|AVX2]
+Thread count: 2 physical cores, 4 logical processors, using up to 4 threads
+
+Optimize a model with 64 rows, 70 columns and 225 nonzeros
+Model fingerprint: 0x18b6c439
+Variable types: 55 continuous, 15 integer (15 binary)
+Coefficient statistics:
+  Matrix range     [1e-01, 1e+07]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 5e+03]
+  RHS range        [7e+01, 1e+07]
+Presolve removed 13 rows and 13 columns
+Presolve time: 0.01s
+
+Explored 0 nodes (0 simplex iterations) in 0.02 seconds (0.00 work units)
+Thread count was 1 (of 4 available processors)
+
+Solution count 0
+
+Model is infeasible or unbounded
+Best objective -, best bound -, gap -
+
+Warning: unable to write requested result file 'C:/Users/nermi/OneDrive/Documents/SGP-Chat/benchmark/application/Dataset/archive/sol_log_q2.sol'
+
+
+Gurobi 11.0.0 (win64) logging started Sun Jan 14 17:05:45 2024
+
+Set parameter LogFile to value "C:/Users/nermi/OneDrive/Documents/SGP-Chat/benchmark/application/Dataset/archive/log_q2"
+Gurobi Optimizer version 11.0.0 build v11.0.0rc2 (win64 - Windows 10.0 (19045.2))
+
+CPU model: Intel(R) Core(TM) m3-7Y30 CPU @ 1.00GHz, instruction set [SSE2|AVX|AVX2]
+Thread count: 2 physical cores, 4 logical processors, using up to 4 threads
+
+Optimize a model with 64 rows, 70 columns and 225 nonzeros
+Model fingerprint: 0x18b6c439
+Variable types: 55 continuous, 15 integer (15 binary)
+Coefficient statistics:
+  Matrix range     [1e-01, 1e+07]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 5e+03]
+  RHS range        [7e+01, 1e+07]
+Presolve removed 13 rows and 13 columns
+Presolve time: 0.03s
+
+Explored 0 nodes (0 simplex iterations) in 0.06 seconds (0.00 work units)
+Thread count was 1 (of 4 available processors)
+
+Solution count 0
+
+Model is infeasible or unbounded
+Best objective -, best bound -, gap -
+
+Warning: unable to write requested result file 'C:/Users/nermi/OneDrive/Documents/SGP-Chat/benchmark/application/Dataset/archive/sol_log_q2.sol'
+
+
+Gurobi 11.0.0 (win64) logging started Sun Jan 14 17:06:23 2024
+
+Set parameter LogFile to value "C:/Users/nermi/OneDrive/Documents/SGP-Chat/benchmark/application/Dataset/archive/log_q2"
+Gurobi Optimizer version 11.0.0 build v11.0.0rc2 (win64 - Windows 10.0 (19045.2))
+
+CPU model: Intel(R) Core(TM) m3-7Y30 CPU @ 1.00GHz, instruction set [SSE2|AVX|AVX2]
+Thread count: 2 physical cores, 4 logical processors, using up to 4 threads
+
+Optimize a model with 64 rows, 70 columns and 225 nonzeros
+Model fingerprint: 0x18b6c439
+Variable types: 55 continuous, 15 integer (15 binary)
+Coefficient statistics:
+  Matrix range     [1e-01, 1e+07]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 5e+03]
+  RHS range        [7e+01, 1e+07]
+Presolve removed 13 rows and 13 columns
+Presolve time: 0.01s
+
+Explored 0 nodes (0 simplex iterations) in 0.02 seconds (0.00 work units)
+Thread count was 1 (of 4 available processors)
+
+Solution count 0
+
+Model is infeasible or unbounded
+Best objective -, best bound -, gap -
+
+Warning: unable to write requested result file 'C:/Users/nermi/OneDrive/Documents/SGP-Chat/benchmark/application/Dataset/archive/sol_log_q2.sol'
+
+
+Gurobi 11.0.0 (win64) logging started Sun Jan 14 17:08:14 2024
+
+Set parameter LogFile to value "C:/Users/nermi/OneDrive/Documents/SGP-Chat/benchmark/application/Dataset/archive/log_q2"
+Gurobi Optimizer version 11.0.0 build v11.0.0rc2 (win64 - Windows 10.0 (19045.2))
+
+CPU model: Intel(R) Core(TM) m3-7Y30 CPU @ 1.00GHz, instruction set [SSE2|AVX|AVX2]
+Thread count: 2 physical cores, 4 logical processors, using up to 4 threads
+
+Optimize a model with 64 rows, 70 columns and 225 nonzeros
+Model fingerprint: 0x18b6c439
+Variable types: 55 continuous, 15 integer (15 binary)
+Coefficient statistics:
+  Matrix range     [1e-01, 1e+07]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 5e+03]
+  RHS range        [7e+01, 1e+07]
+Presolve removed 13 rows and 13 columns
+Presolve time: 0.02s
+
+Explored 0 nodes (0 simplex iterations) in 0.03 seconds (0.00 work units)
+Thread count was 1 (of 4 available processors)
+
+Solution count 0
+
+Model is infeasible or unbounded
+Best objective -, best bound -, gap -
+
+Warning: unable to write requested result file 'C:/Users/nermi/OneDrive/Documents/SGP-Chat/benchmark/application/Dataset/archive/sol_log_q2.sol'
+
+
+Gurobi 11.0.0 (win64) logging started Sun Jan 14 17:09:42 2024
+
+Set parameter LogFile to value "C:/Users/nermi/OneDrive/Documents/SGP-Chat/benchmark/application/Dataset/archive/log_q2"
+Gurobi Optimizer version 11.0.0 build v11.0.0rc2 (win64 - Windows 10.0 (19045.2))
+
+CPU model: Intel(R) Core(TM) m3-7Y30 CPU @ 1.00GHz, instruction set [SSE2|AVX|AVX2]
+Thread count: 2 physical cores, 4 logical processors, using up to 4 threads
+
+Optimize a model with 64 rows, 70 columns and 225 nonzeros
+Model fingerprint: 0x18b6c439
+Variable types: 55 continuous, 15 integer (15 binary)
+Coefficient statistics:
+  Matrix range     [1e-01, 1e+07]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 5e+03]
+  RHS range        [7e+01, 1e+07]
+Presolve removed 13 rows and 13 columns
+Presolve time: 0.00s
+
+Explored 0 nodes (0 simplex iterations) in 0.02 seconds (0.00 work units)
+Thread count was 1 (of 4 available processors)
+
+Solution count 0
+
+Model is infeasible or unbounded
+Best objective -, best bound -, gap -
+
+Warning: unable to write requested result file 'C:/Users/nermi/OneDrive/Documents/SGP-Chat/benchmark/application/Dataset/archive/sol_log_q2.sol'
+

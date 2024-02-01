@@ -94,7 +94,7 @@ It's important to note that a negative objective value indicates a profit, and a
 Since the objective value is negative, it represents a profit, but the magnitude has increased slightly from the original value.
 
 No specific constraints have been mentioned as violated, and the problem is not unbounded. Therefore, the solution is feasible."
-hat's the new state of battery of the community if prosumer 2 shifts 10% of their load at 2 pm to 3 pm,Pcons[1][1] = Pcons[1][1]*(100-10)/100 \nPcons[2][1] =Pcons[2][1] + Pcons[1][1]*10/100,-26.211111111111116,"Pcons[1][1] = Pcons[1][1]*(100-10)/100 
+What's the new state of battery of the community if prosumer 2 shifts 10% of their load at 2 pm to 3 pm,Pcons[1][1] = Pcons[1][1]*(100-10)/100 \nPcons[2][1] =Pcons[2][1] + Pcons[1][1]*10/100,-26.211111111111116,"Pcons[1][1] = Pcons[1][1]*(100-10)/100 
 Pcons[2][1] = Pcons[2][1] + Pcons[1][1]*10/100",Optimization problem solved. The objective value is: -26.211111111111116,"The optimization problem has been solved, and the objective value obtained is -26.211. 
 
 In the context of this microgrid energy management problem, the negative objective value indicates a profit. When comparing this to the original result of -26.111, the new objective value represents a slightly lower profit. 
