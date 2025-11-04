@@ -1,0 +1,10 @@
+openai>=1.21.0
+pulp>=2.8.0
+pandas>=2.2.0
+numpy>=1.26.0
+pyyaml>=6.0.1
+tqdm>=4.66.0
+
+# Optional extras:
+# pyautogen
+# gurobipy
