@@ -24,6 +24,9 @@ The system optimizes battery charging/discharging and grid transactions to minim
 ## Features
 
 - Multi-agent pipeline (Coder → Optimizer → Interpreter)
+- **LLM-powered agents** with ICL (In-Context Learning) examples for intelligent parsing and interpretation
+- **Rule-based fallback** when LLM is not available
+- **Debug logging** to trace prompts and responses for all agents
 - Optional **AutoGen** orchestration (`scripts/autogen_pipeline.py`)
 - Expanded dataset builder across 3 categories (`scripts/build_dataset.py`)
 - **Gurobi** hooks + **IIS** (Irreducible Inconsistent Subsystem) infeasibility diagnostics
@@ -38,18 +41,31 @@ git clone <repository-url>
 cd Explainable-REC
 ```
 
-2. Install dependencies:
+2. Create and activate a virtual environment (recommended):
 ```bash
-pip install -r requirements.txt
+python -m venv venv
+# On Windows:
+venv\Scripts\activate
+# On Linux/Mac:
+source venv/bin/activate
 ```
 
-3. Set up environment variables:
+3. Install the package:
+```bash
+pip install -e .
+```
+
+This will install all required dependencies from `requirements.txt`.
+
+4. Set up environment variables:
 ```bash
 cp .env_example .env
 # Edit .env and add your OpenAI API key
 ```
 
-4. (Optional) Install additional dependencies:
+**Note**: The system works without an API key using rule-based fallback, but LLM features require an OpenAI API key.
+
+5. (Optional) Install additional dependencies:
 ```bash
 # For AutoGen orchestration
 pip install pyautogen
@@ -68,6 +84,11 @@ Run the standard multi-agent pipeline:
 python scripts/run_pipeline.py --question "What happens if imports increase by 10%?"
 ```
 
+With debug output to see prompts and responses:
+```bash
+python scripts/run_pipeline.py --question "What happens if imports increase by 10%?" --debug
+```
+
 With Gurobi solver:
 ```bash
 python scripts/run_pipeline.py --question "What happens if imports increase by 10%?" --solver gurobi
@@ -76,20 +97,27 @@ python scripts/run_pipeline.py --question "What happens if imports increase by 1
 Output format:
 ```json
 {
-  "ops": [
-    {
-      "op": "scale_series",
-      "target": "Pimp",
-      "scale_pct": 10
-    }
-  ],
+  "ops": {
+    "ops": [
+      {
+        "op": "scale_series",
+        "target": "Pimp",
+        "scale_pct": 10.0
+      }
+    ],
+    "explanation": "llm-with-icl"
+  },
   "result": {
     "status": "optimal",
-    "objective": 12.34
+    "objective": 9.26
   },
-  "answer": "Objective: €12.34"
+  "answer": "In the scenario where import capacity increased by 10.0%, The total cost increases to EUR 9.26, which is +14.8% higher than the baseline scenario (EUR 8.06). The optimization found the most cost-effective way to manage energy storage, grid imports, and exports over the 24-hour period."
 }
 ```
+
+**Note**: The `explanation` field shows:
+- `"llm-with-icl"` when using LLM with ICL examples
+- `"rule-based"` when using rule-based fallback (no API key or LLM unavailable)
 
 ### AutoGen Pipeline
 
@@ -125,9 +153,22 @@ This generates questions across three categories:
 
 ### Agents
 
-- **CoderAgent** (`chatsgp/agents/coder_agent.py`): Rule-based parser that extracts modifications from questions
-- **OptimizerAgent** (`chatsgp/agents/optimizer_agent.py`): Runs MILP optimization with PuLP or Gurobi
-- **InterpreterAgent** (`chatsgp/agents/interpreter_agent.py`): Interprets optimization results
+- **CoderAgent** (`chatsgp/agents/coder_agent.py`): 
+  - Uses LLM with ICL examples for intelligent question parsing (when API key is available)
+  - Falls back to rule-based pattern matching when LLM is unavailable
+  - Extracts modifications from natural language questions
+  - ICL examples: `chatsgp/icl/examples.jsonl`
+  
+- **OptimizerAgent** (`chatsgp/agents/optimizer_agent.py`): 
+  - Runs MILP optimization with PuLP or Gurobi
+  - Applies modifications to the optimization model
+  - Solves 24-hour energy optimization problem
+  
+- **InterpreterAgent** (`chatsgp/agents/interpreter_agent.py`): 
+  - Uses LLM with ICL examples to generate human-readable interpretations (when API key is available)
+  - Falls back to rule-based interpretation when LLM is unavailable
+  - Compares results with baseline scenario
+  - ICL examples: `chatsgp/icl/interpreter_examples.jsonl`
 
 ### Optimization Model
 
@@ -148,6 +189,30 @@ Subject to:
 
 - **PuLP** (default): Open-source, no license required
 - **Gurobi**: Commercial solver with better performance and IIS diagnostics for infeasible problems
+
+## Debug Mode
+
+Enable debug logging to see prompts and responses for all agents:
+
+```bash
+python scripts/run_pipeline.py --question "What happens if PV generation increases by 20%?" --debug
+```
+
+This will show:
+- Input questions and ICL examples used
+- LLM prompts sent to CoderAgent and InterpreterAgent
+- LLM responses received
+- Optimization data and results
+- Final interpretations
+
+## ICL (In-Context Learning) Examples
+
+The system uses ICL examples to improve LLM performance:
+
+- **CoderAgent ICL**: `chatsgp/icl/examples.jsonl` - Example question-to-operation mappings
+- **InterpreterAgent ICL**: `chatsgp/icl/interpreter_examples.jsonl` - Example interpretation patterns
+
+You can add more examples to these files to improve the system's understanding of different scenarios.
 
 ## License
 
