@@ -1,4 +1,4 @@
-# Chat-SGP (Chat-based Stochastic Generation Planning)
+# Chat-SGP (Smart Grid Prosumer)
 
 A multi-agent system that uses natural language to solve renewable energy optimization problems. The pipeline processes questions about energy scenarios (e.g., "What happens if imports increase by 10%?"), modifies optimization models accordingly, solves them, and returns interpretable results.
 
@@ -35,7 +35,7 @@ The system optimizes battery charging/discharging and grid transactions to minim
 1. Clone the repository:
 ```bash
 git clone <repository-url>
-cd SGP-Chat
+cd Explainable-REC
 ```
 
 2. Install dependencies:
@@ -57,16 +57,6 @@ pip install pyautogen
 # For Gurobi solver (requires license)
 pip install gurobipy
 ```
-
-## Configuration
-
-Create a `.env` file in the root directory with your configuration:
-
-```bash
-OPENAI_API_KEY=your_openai_api_key_here
-```
-
-Get your OpenAI API key from: https://platform.openai.com/api-keys
 
 ## Usage
 
