@@ -3,6 +3,7 @@ from chatsgp.agents.coder_agent import CoderAgent
 from chatsgp.agents.optimizer_agent import OptimizerAgent
 from chatsgp.agents.interpreter_agent import InterpreterAgent
 from chatsgp.agents.orchestrator import Orchestrator
+from chatsgp.utils.llm_backend import LLM
 
 def load_icl(path='chatsgp/icl/examples.jsonl'):
     import pathlib
@@ -13,7 +14,17 @@ def load_icl(path='chatsgp/icl/examples.jsonl'):
     return ex
 
 if __name__=='__main__':
-    ap=argparse.ArgumentParser(); ap.add_argument('--question', required=True); ap.add_argument('--solver', default='pulp'); args=ap.parse_args()
-    o=Orchestrator(CoderAgent(load_icl()), OptimizerAgent(), InterpreterAgent())
+    import os
+    ap=argparse.ArgumentParser()
+    ap.add_argument('--question', required=True)
+    ap.add_argument('--solver', default='pulp')
+    ap.add_argument('--debug', action='store_true', help='Enable debug output showing prompts and responses')
+    args=ap.parse_args()
+    
+    # Set debug environment variable
+    if args.debug:
+        os.environ['DEBUG'] = 'true'
+    
+    o=Orchestrator(CoderAgent(load_icl(), llm=LLM()), OptimizerAgent(), InterpreterAgent())
     out=o.run_question(args.question, solver=args.solver)
-    print(json.dumps(out, indent=2))
+    print(json.dumps(out, indent=2, ensure_ascii=False))

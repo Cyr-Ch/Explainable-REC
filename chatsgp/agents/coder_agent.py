@@ -1,17 +1,107 @@
+import json
+import re
+from ..utils.debug import debug_prompt, debug_response, debug_data
+
 class CoderAgent:
     def __init__(self, icl_examples, llm=None):
-        self.icl=icl_examples; self.llm=llm
-    def propose_modifications(self, q):
-        q=q.lower(); import re
+        self.icl = icl_examples
+        self.llm = llm
+    
+    def _rule_based_parse(self, q):
+        """Fallback rule-based parsing for when LLM is not available"""
+        q = q.lower()
         def pct():
-            import re
-            m=re.search(r'(-?\d+(?:\.\d+)?)\s*%', q); return float(m.group(1)) if m else None
-        p=pct(); ops=[]
-        if 'import' in q and p is not None: ops.append({'op':'scale_series','target':'Pimp','scale_pct':p})
-        elif 'export' in q and p is not None: ops.append({'op':'scale_series','target':'Pexp','scale_pct':p})
-        elif 'pv' in q and p is not None: ops.append({'op':'scale_series','target':'PV','scale_pct':p})
+            m = re.search(r'(-?\d+(?:\.\d+)?)\s*%', q)
+            return float(m.group(1)) if m else None
+        
+        p = pct()
+        ops = []
+        
+        if 'import' in q and p is not None:
+            ops.append({'op': 'scale_series', 'target': 'Pimp', 'scale_pct': p})
+        elif 'export' in q and p is not None:
+            ops.append({'op': 'scale_series', 'target': 'Pexp', 'scale_pct': p})
+        elif 'pv' in q and p is not None:
+            ops.append({'op': 'scale_series', 'target': 'PV', 'scale_pct': p})
         elif 'shift' in q and p is not None:
-            hh=re.findall(r'(?:from|at)\s+(\d{1,2}).*?(?:to)\s+(\d{1,2})', q)
-            a,b=(13,14) if not hh else (int(hh[0][0]), int(hh[0][1]))
-            ops.append({'op':'shift_load','percentage':p,'from_hour':a,'to_hour':b})
-        return {'ops':ops,'explanation':'rule-based'}
+            hh = re.findall(r'(?:from|at)\s+(\d{1,2}).*?(?:to)\s+(\d{1,2})', q)
+            a, b = (13, 14) if not hh else (int(hh[0][0]), int(hh[0][1]))
+            ops.append({'op': 'shift_load', 'percentage': p, 'from_hour': a, 'to_hour': b})
+        
+        return {'ops': ops, 'explanation': 'rule-based'}
+    
+    def _build_icl_prompt(self, question):
+        """Build a prompt with ICL examples for few-shot learning"""
+        examples_text = ""
+        for ex in self.icl[:3]:  # Use first 3 examples
+            examples_text += f"Question: {ex.get('question', '')}\n"
+            examples_text += f"Modifications: {json.dumps(ex.get('ops', []))}\n\n"
+        
+        prompt = f"""You are an energy system analyst. Given a natural language question about energy scenarios, extract the modifications needed for the optimization model.
+
+Available operations:
+1. scale_series: Scale a series (PV, Load, Pimp, Pexp) by a percentage
+   Format: {{"op": "scale_series", "target": "PV|Load|Pimp|Pexp", "scale_pct": number}}
+2. shift_load: Shift load from one hour to another
+   Format: {{"op": "shift_load", "percentage": number, "from_hour": number, "to_hour": number}}
+
+Examples:
+{examples_text}
+
+Question: {question}
+
+Extract the modifications as a JSON array of operations. Return only the JSON array, no other text.
+
+Example output format:
+[{{"op": "scale_series", "target": "PV", "scale_pct": 20}}]"""
+        
+        return prompt
+    
+    def propose_modifications(self, q):
+        """Propose modifications using LLM with ICL if available, otherwise rule-based"""
+        debug_data("CoderAgent", "INPUT QUESTION", q)
+        debug_data("CoderAgent", "ICL EXAMPLES", self.icl)
+        
+        # Check if LLM is available
+        if self.llm and self.llm.client is not None:
+            debug_data("CoderAgent", "LLM STATUS", "LLM client is available - will attempt LLM-based parsing")
+        else:
+            debug_data("CoderAgent", "LLM STATUS", f"LLM client is NOT available (no API key?) - falling back to rule-based parsing")
+        
+        # Try LLM-based parsing if LLM is available and ICL examples exist
+        if self.llm and self.llm.client is not None and len(self.icl) > 0:
+            try:
+                prompt = self._build_icl_prompt(q)
+                debug_prompt("CoderAgent", prompt)
+                
+                response = self.llm.complete(prompt, temperature=0.0, max_tokens=300)
+                debug_response("CoderAgent", response)
+                
+                # Try to extract JSON array from response
+                json_match = re.search(r'\[.*?\]', response, re.DOTALL)
+                if json_match:
+                    ops_json = json_match.group(0)
+                    ops = json.loads(ops_json)
+                    # Validate operations structure
+                    if isinstance(ops, list) and len(ops) > 0:
+                        # Validate each operation has required fields
+                        valid_ops = []
+                        for op in ops:
+                            if op.get('op') == 'scale_series' and 'target' in op and 'scale_pct' in op:
+                                valid_ops.append(op)
+                            elif op.get('op') == 'shift_load' and 'percentage' in op and 'from_hour' in op and 'to_hour' in op:
+                                valid_ops.append(op)
+                        
+                        if valid_ops:
+                            result = {'ops': valid_ops, 'explanation': 'llm-with-icl'}
+                            debug_data("CoderAgent", "OUTPUT OPERATIONS", result)
+                            return result
+            except Exception as e:
+                debug_data("CoderAgent", "LLM ERROR", str(e))
+                # Fallback to rule-based if LLM fails
+                pass
+        
+        # Fallback to rule-based parsing
+        result = self._rule_based_parse(q)
+        debug_data("CoderAgent", "OUTPUT OPERATIONS (rule-based)", result)
+        return result

@@ -18,7 +18,7 @@ class AutoGenOrchestrator:
         if not AUTOGEN_AVAILABLE:
             ops=self.coder.propose_modifications(question)
             data,res=self.optimizer.run(ops, solver=solver)
-            ans=self.interpreter.interpret(data,res)
+            ans=self.interpreter.interpret(data,res,ops)
             return {'ops':ops,'result':res,'answer':ans,'autogen_used':False}
         llm_config={'model': getattr(self.llm,'model','gpt-4o-mini')} if self.llm else {}
         coder_agent=autogen.AssistantAgent('coder', system_message='Coder agent', llm_config=llm_config)
@@ -31,16 +31,19 @@ class AutoGenOrchestrator:
             except Exception: ops={'ops':[]}
             data,res=self.optimizer.run(ops, solver=solver_name)
             return json.dumps({'result':res})
-        def interpret(payload:str):
+        def interpret(payload:str, ops_json:str=''):
             try: r=json.loads(payload).get('result',{})
             except Exception: r={}
-            return self.interpreter.interpret({}, r)
+            try: ops=json.loads(ops_json) if ops_json else {'ops':[]}
+            except Exception: ops={'ops':[]}
+            return self.interpreter.interpret({}, r, ops)
         coder_agent.register_for_llm(name='propose', description='Propose ops')(propose)
         optimizer_agent.register_for_llm(name='optimize', description='Run MILP')(optimize)
         interpreter_agent.register_for_llm(name='interpret', description='Explain')(interpret)
         cr=user.initiate_chat(coder_agent, message=f'Question: {question}. Call propose().')
         orr=user.initiate_chat(optimizer_agent, message='Call optimize() with coder output.')
-        ir=user.initiate_chat(interpreter_agent, message='Call interpret() with optimizer output.')
+        ops_str=cr.chat_history[-1]['content'] if cr.chat_history else '{"ops":[]}'
+        ir=user.initiate_chat(interpreter_agent, message=f'Call interpret() with optimizer output and ops: {ops_str}.')
         try: ops=json.loads(cr.chat_history[-1]['content'])
         except Exception: ops={'ops':[]}
         return {'ops':ops,'result_raw': orr.chat_history[-1]['content'] if orr.chat_history else '{}','answer': ir.chat_history[-1]['content'] if ir.chat_history else 'N/A','autogen_used':True}

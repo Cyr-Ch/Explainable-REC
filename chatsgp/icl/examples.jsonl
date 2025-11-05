@@ -1,1 +1,5 @@
 {"question":"imports increase by 18%","ops":[{"op":"scale_series","target":"Pimp","scale_pct":18}]}
+{"question":"What happens if PV generation increases by 20%?","ops":[{"op":"scale_series","target":"PV","scale_pct":20}]}
+{"question":"shift 25% of load from hour 13 to hour 14","ops":[{"op":"shift_load","percentage":25,"from_hour":13,"to_hour":14}]}
+{"question":"export capacity decreases by 15%","ops":[{"op":"scale_series","target":"Pexp","scale_pct":-15}]}
+{"question":"increase consumption by 10%","ops":[{"op":"scale_series","target":"Load","scale_pct":10}]}
