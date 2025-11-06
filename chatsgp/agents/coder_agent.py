@@ -1,6 +1,7 @@
 import json
 import re
 from ..utils.debug import debug_prompt, debug_response, debug_data
+from ..utils.validation import validate_question, validate_operations
 
 class CoderAgent:
     def __init__(self, icl_examples, llm=None):
@@ -58,7 +59,23 @@ Example output format:
         return prompt
     
     def propose_modifications(self, q):
-        """Propose modifications using LLM with ICL if available, otherwise rule-based"""
+        """
+        Propose modifications using LLM with ICL if available, otherwise rule-based
+        
+        Args:
+            q: Question string
+        
+        Returns:
+            Dictionary with 'ops' (list of operations) and 'explanation' (method used)
+        
+        Raises:
+            ValueError: If question is invalid
+        """
+        # Validate input
+        is_valid, error_msg = validate_question(q)
+        if not is_valid:
+            raise ValueError(f"Invalid question: {error_msg}")
+        
         debug_data("CoderAgent", "INPUT QUESTION", q)
         debug_data("CoderAgent", "ICL EXAMPLES", self.icl)
         
@@ -93,9 +110,15 @@ Example output format:
                                 valid_ops.append(op)
                         
                         if valid_ops:
-                            result = {'ops': valid_ops, 'explanation': 'llm-with-icl'}
-                            debug_data("CoderAgent", "OUTPUT OPERATIONS", result)
-                            return result
+                            # Validate operations
+                            is_valid, error_msg = validate_operations(valid_ops)
+                            if not is_valid:
+                                debug_data("CoderAgent", "LLM VALIDATION ERROR", error_msg)
+                                # Fall through to rule-based
+                            else:
+                                result = {'ops': valid_ops, 'explanation': 'llm-with-icl'}
+                                debug_data("CoderAgent", "OUTPUT OPERATIONS", result)
+                                return result
             except Exception as e:
                 debug_data("CoderAgent", "LLM ERROR", str(e))
                 # Fallback to rule-based if LLM fails

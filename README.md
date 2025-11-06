@@ -1,6 +1,8 @@
 # Chat-SGP (Smart Grid Prosumer)
 
-A multi-agent system that uses natural language to solve renewable energy optimization problems. The pipeline processes questions about energy scenarios (e.g., "What happens if imports increase by 10%?"), modifies optimization models accordingly, solves them, and returns interpretable results.
+**Ask natural-language questions about your renewable energy system and get optimized action plans with human-readable explanations.**
+
+Chat-SGP is a multi-agent system that transforms natural language questions (e.g., "What happens if imports increase by 10%?") into optimized energy management strategies. The system processes your questions, modifies optimization models accordingly, solves them, and returns interpretable results with actionable insights.
 
 ## Paper
 
@@ -11,15 +13,73 @@ Amal Nammouchi∗, Cyrine Chaabani†, Andreas Theocharis‡, Andreas Kassler∗
 
 Paper: [IEEE Xplore](https://ieeexplore.ieee.org/abstract/document/10863790)
 
-## Overview
+---
 
-Chat-SGP solves energy system optimization problems using a three-agent pipeline:
+## 🎯 Why use this?
 
-1. **Coder Agent**: Parses natural language questions and proposes modifications to the optimization model (scaling imports/exports/PV generation, shifting load between hours, etc.)
-2. **Optimizer Agent**: Solves a mixed-integer linear program (MILP) for 24-hour energy optimization with PV generation, battery storage, and grid import/export
-3. **Interpreter Agent**: Interprets optimization results and provides human-readable answers
+Chat-SGP makes renewable energy optimization **accessible to everyone**—no optimization expertise required. Simply ask questions in plain English and get:
 
-The system optimizes battery charging/discharging and grid transactions to minimize energy costs while respecting physical constraints.
+- ✅ **Instant insights**: Understand how changes to PV generation, load patterns, or energy prices affect your system
+- ✅ **Optimized solutions**: Get cost-minimized energy management strategies for 24-hour periods
+- ✅ **Human-readable explanations**: Understand *why* the system recommends specific actions
+- ✅ **Flexible scenarios**: Test "what-if" scenarios without writing code or modifying optimization models
+- ✅ **Production-ready**: Works with or without LLM APIs, includes comprehensive tests and documentation
+
+Perfect for energy managers, researchers, and developers working with renewable energy systems.
+
+---
+
+## 🚀 Quickstart (1-2 commands)
+
+Get started in minutes:
+
+```bash
+# 1. Install and setup
+pip install -e .
+cp .env_example .env  # Optional: Add OpenAI API key for LLM features
+
+# 2. Ask your first question
+python scripts/run_pipeline.py --question "What happens if PV generation increases by 20%?"
+```
+
+That's it! The system will:
+1. Parse your question
+2. Optimize the energy system
+3. Return a human-readable answer with cost analysis
+
+**Interactive mode:**
+```bash
+python scripts/run_pipeline.py --interactive
+```
+
+**With visualization:**
+```bash
+python scripts/run_pipeline.py --question "What happens if imports increase by 10%?" --plot
+```
+
+---
+
+## 📚 How it works (agents + optimiser)
+
+Chat-SGP uses a three-agent pipeline to transform questions into optimized solutions:
+
+### 1. **Coder Agent** → Understands your question
+- Parses natural language questions using LLM (with ICL examples) or rule-based fallback
+- Extracts modifications: scaling imports/exports/PV generation, shifting load between hours, etc.
+- Outputs structured operations for the optimizer
+
+### 2. **Optimizer Agent** → Solves the problem
+- Solves a mixed-integer linear program (MILP) for 24-hour energy optimization
+- Considers PV generation, battery storage, and grid import/export
+- Minimizes total energy cost while respecting physical constraints
+- Supports PuLP (open-source) and Gurobi (commercial) solvers
+
+### 3. **Interpreter Agent** → Explains the results
+- Interprets optimization results using LLM (with ICL examples) or rule-based fallback
+- Compares scenario results with baseline
+- Provides human-readable explanations with cost analysis and insights
+
+**The system optimizes battery charging/discharging and grid transactions to minimize energy costs while respecting physical constraints.**
 
 ## Features
 
@@ -27,6 +87,13 @@ The system optimizes battery charging/discharging and grid transactions to minim
 - **LLM-powered agents** with ICL (In-Context Learning) examples for intelligent parsing and interpretation
 - **Rule-based fallback** when LLM is not available
 - **Debug logging** to trace prompts and responses for all agents
+- **Configuration file support** (YAML/JSON) for easy customization
+- **Input validation** and helpful error messages
+- **Unit tests** and integration tests for reliability
+- **Enhanced CLI** with interactive mode, multiple output formats, and visualization
+- **Result visualization** with energy flow plots and cost comparison charts
+- **Jupyter notebook tutorial** for interactive learning
+- **Example scenarios** for residential, commercial, and grid analysis use cases
 - Optional **AutoGen** orchestration (`scripts/autogen_pipeline.py`)
 - Expanded dataset builder across 3 categories (`scripts/build_dataset.py`)
 - **Gurobi** hooks + **IIS** (Irreducible Inconsistent Subsystem) infeasibility diagnostics
@@ -65,13 +132,22 @@ cp .env_example .env
 
 **Note**: The system works without an API key using rule-based fallback, but LLM features require an OpenAI API key.
 
-5. (Optional) Install additional dependencies:
+5. (Optional) Create configuration file:
+```bash
+cp config.yaml.example config.yaml
+# Edit config.yaml to customize system parameters
+```
+
+6. (Optional) Install additional dependencies:
 ```bash
 # For AutoGen orchestration
 pip install pyautogen
 
 # For Gurobi solver (requires license)
 pip install gurobipy
+
+# For development (testing, linting)
+pip install -r requirements-dev.txt
 ```
 
 ## Usage
@@ -93,6 +169,48 @@ With Gurobi solver:
 ```bash
 python scripts/run_pipeline.py --question "What happens if imports increase by 10%?" --solver gurobi
 ```
+
+### Enhanced CLI Features
+
+The CLI supports many additional options:
+
+**Configuration file:**
+```bash
+python scripts/run_pipeline.py --question "What happens if PV increases by 20%?" --config config.yaml
+```
+
+**Save results to file:**
+```bash
+python scripts/run_pipeline.py --question "What if we shift load?" --output results.json
+```
+
+**Different output formats:**
+```bash
+# JSON (default)
+python scripts/run_pipeline.py --question "What happens if PV increases by 20%?" --format json
+
+# YAML
+python scripts/run_pipeline.py --question "What happens if PV increases by 20%?" --format yaml
+
+# Human-readable text
+python scripts/run_pipeline.py --question "What happens if PV increases by 20%?" --format text
+```
+
+**Interactive mode:**
+```bash
+python scripts/run_pipeline.py --interactive
+```
+
+This starts an interactive Q&A session where you can ask multiple questions. Type `help` for example questions, or `quit` to exit.
+
+**Visualization:**
+```bash
+python scripts/run_pipeline.py --question "What happens if PV increases by 20%?" --plot
+```
+
+This generates plots showing:
+- 24-hour energy flows (PV, Load, Battery, Grid)
+- Cost comparison between baseline and scenario
 
 Output format:
 ```json
@@ -148,6 +266,69 @@ This generates questions across three categories:
 - `QPimpPexp`: Import/export percentage changes
 - `QPconsPprod`: Consumption/production changes
 - `QPshift`: Load shifting scenarios
+
+### Running Examples
+
+Try the example scripts:
+
+```bash
+# Quick start examples
+python examples/quickstart.py
+
+# Configuration example
+python examples/example_with_config.py
+```
+
+### Jupyter Notebook Tutorial
+
+For an interactive tutorial with visualizations, open the Jupyter notebook:
+
+```bash
+jupyter notebook examples/tutorial.ipynb
+```
+
+The tutorial covers:
+- Basic usage and setup
+- Different question types
+- Visualizing results
+- Comparing scenarios
+- Customizing parameters
+
+### Example Scenarios
+
+Explore real-world scenarios with different parameter sets:
+
+```bash
+# Residential energy community
+python examples/scenarios/residential_energy_community.py
+
+# Commercial building
+python examples/scenarios/commercial_building.py
+
+# Grid impact analysis
+python examples/scenarios/grid_impact_analysis.py
+```
+
+Each scenario demonstrates:
+- Different battery capacities and power limits
+- Custom PV and load profiles
+- Different energy prices
+- Multiple scenario comparisons
+
+### Running Tests
+
+Run the test suite:
+
+```bash
+# Run all tests
+pytest
+
+# Run with verbose output
+pytest -v
+
+# Run specific test file
+pytest tests/test_coder_agent.py
+```
 
 ## Architecture
 
@@ -214,26 +395,84 @@ The system uses ICL examples to improve LLM performance:
 
 You can add more examples to these files to improve the system's understanding of different scenarios.
 
+## Configuration
+
+The system supports configuration files for easy customization. Create a `config.yaml` file:
+
+```yaml
+# Battery configuration
+battery:
+  capacity_kwh: 5.0
+  efficiency: 0.95
+  max_power: 2.0
+  initial_soc: 0.5
+
+# Energy prices
+prices:
+  import: 0.25  # EUR/kWh
+  export: 0.10  # EUR/kWh
+
+# LLM configuration
+llm:
+  model: "gpt-4o-mini"
+  temperature: 0.0
+  max_tokens: 300
+
+# Optimization settings
+optimization:
+  default_solver: "pulp"
+  hours: 24
+```
+
+The system will automatically load `config.yaml` if it exists in the project root. See `config.yaml.example` for a template.
+
+## Testing
+
+The repository includes comprehensive tests:
+
+```bash
+# Run all tests
+pytest
+
+# Run with coverage
+pytest --cov=chatsgp
+
+# Run specific test file
+pytest tests/test_coder_agent.py -v
+```
+
+Test coverage includes:
+- Unit tests for each agent
+- Integration tests for the full pipeline
+- Validation tests
+- Error handling tests
+
 ## License
 
 This project is licensed under the Apache License 2.0. See the [LICENSE](LICENSE) file for details.
 
 Copyright 2024 Cyrine Chaabani
 
-## Contributing
+## 🧑‍💻 How to contribute
 
-We welcome contributions to Chat-SGP! Here are some guidelines to help you get started:
+We welcome contributions to Chat-SGP! Whether you're fixing bugs, adding features, or improving documentation, your help makes this project better.
 
 ### Getting Started
 
-1. Fork the repository
-2. Clone your fork: `git clone https://github.com/yourusername/SGP-Chat.git`
-3. Create a new branch: `git checkout -b feature/your-feature-name`
-4. Make your changes
-5. Test your changes to ensure they work correctly
-6. Commit your changes: `git commit -m "Add your descriptive message"`
-7. Push to your fork: `git push origin feature/your-feature-name`
-8. Open a Pull Request
+1. **Fork the repository** and clone your fork
+2. **Create a new branch**: `git checkout -b feature/your-feature-name`
+3. **Make your changes** and test them
+4. **Commit your changes**: `git commit -m "Add your descriptive message"`
+5. **Push to your fork**: `git push origin feature/your-feature-name`
+6. **Open a Pull Request** with a clear description
+
+### Good First Issues
+
+Looking for a place to start? Check out issues tagged with:
+- [`good first issue`](https://github.com/yourusername/Explainable-REC/labels/good%20first%20issue) - Great for newcomers
+- [`help wanted`](https://github.com/yourusername/Explainable-REC/labels/help%20wanted) - Community help needed
+
+**Note**: If you don't see any tagged issues yet, check the [IMPROVEMENTS.md](IMPROVEMENTS.md) file for ideas on what to work on!
 
 ### Code Style
 
@@ -244,7 +483,7 @@ We welcome contributions to Chat-SGP! Here are some guidelines to help you get s
 
 ### Testing
 
-- Test your changes before submitting a PR
+- Test your changes before submitting a PR: `pytest`
 - Ensure existing functionality still works
 - Add tests for new features if applicable
 
@@ -252,22 +491,25 @@ We welcome contributions to Chat-SGP! Here are some guidelines to help you get s
 
 1. Ensure your code follows the project's style guidelines
 2. Update documentation if needed
-3. Make sure all tests pass
+3. Make sure all tests pass: `pytest`
 4. Provide a clear description of your changes in the PR
 5. Reference any related issues
 
 ### Areas for Contribution
 
-- Bug fixes
-- Performance improvements
-- Additional question types for the Coder Agent
-- Enhanced optimization models
-- Documentation improvements
-- Test coverage
+- 🐛 **Bug fixes**: Help us improve stability
+- ⚡ **Performance improvements**: Make the system faster
+- 🆕 **New features**: See [IMPROVEMENTS.md](IMPROVEMENTS.md) for ideas
+- 📝 **Documentation**: Improve clarity and examples
+- 🧪 **Test coverage**: Add more tests
+- 🎨 **UI/UX**: Improve CLI or add web interface
 
 ### Questions?
 
-If you have questions or need help, please open an issue on GitHub.
+If you have questions or need help, please:
+- Open an issue on GitHub
+- Check the [IMPROVEMENTS.md](IMPROVEMENTS.md) for roadmap ideas
+- Review existing issues and pull requests
 
 ## Citation
 

@@ -1,0 +1,31 @@
+# Chat-SGP Configuration File
+# Copy this file to config.yaml and customize as needed
+
+# Battery configuration
+battery:
+  capacity_kwh: 5.0      # Battery capacity in kWh
+  efficiency: 0.95        # Battery round-trip efficiency (0-1)
+  max_power: 2.0         # Maximum charge/discharge power in kW
+  initial_soc: 0.5       # Initial state of charge (0-1)
+
+# Energy prices
+prices:
+  import: 0.25           # Grid import price in EUR/kWh
+  export: 0.10           # Grid export price in EUR/kWh
+
+# LLM configuration
+llm:
+  model: "gpt-4o-mini"   # OpenAI model to use
+  temperature: 0.0       # Temperature for LLM (0-2)
+  max_tokens: 300        # Maximum tokens for LLM responses
+
+# Optimization settings
+optimization:
+  default_solver: "pulp"  # Default solver: "pulp" or "gurobi"
+  hours: 24              # Number of hours to optimize
+
+# Custom profiles (optional)
+# If None, default profiles will be used
+# pv_profile: [0, 0, 0, 0, 0.2, 0.5, 1, 1.5, 2, 2.2, 2, 1.5, 1, 0.8, 0.5, 0.2, 0, 0, 0, 0, 0, 0, 0, 0]
+# load_profile: [2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0]
+
