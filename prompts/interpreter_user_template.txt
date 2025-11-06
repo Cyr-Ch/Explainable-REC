@@ -1,0 +1,19 @@
+{examples_text}Scenario: {modifications}
+Optimization Status: {status}
+Total Cost: EUR {objective}
+{baseline_info}
+{cost_change_info}
+
+PV Generation Profile: {pv_profile}
+Load Profile: {load_profile}
+Battery Capacity: {battery_capacity_kwh} kWh
+Import Price: EUR {price_import}/kWh
+Export Price: EUR {price_export}/kWh
+
+Provide a clear, concise interpretation in 2-3 sentences explaining:
+1. What the scenario change means
+2. The impact on total energy costs
+3. Key insights about the optimization result
+
+Answer in plain language for a non-technical audience.
+

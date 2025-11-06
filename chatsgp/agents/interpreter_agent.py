@@ -4,11 +4,15 @@ import numpy as np
 
 import json
 import os
+from pathlib import Path
 
 class InterpreterAgent:
     def __init__(self, llm=None, icl_examples=None):
         self.llm = llm if llm is not None else LLM()
         self.icl = icl_examples if icl_examples is not None else self._load_default_icl()
+        self._system_prompt = None
+        self._user_template = None
+        self._load_prompt_templates()
     
     def _load_default_icl(self):
         """Load default ICL examples for interpreter"""
@@ -24,6 +28,32 @@ class InterpreterAgent:
             except Exception:
                 pass
         return examples
+    
+    def _load_prompt_templates(self):
+        """Load prompt templates from files, with fallback to hardcoded prompts"""
+        try:
+            # Try to find prompts directory relative to project root
+            current_file = Path(__file__)
+            project_root = current_file.parent.parent.parent
+            prompts_dir = project_root / 'prompts'
+            
+            system_prompt_path = prompts_dir / 'interpreter_system.txt'
+            user_template_path = prompts_dir / 'interpreter_user_template.txt'
+            
+            if system_prompt_path.exists() and user_template_path.exists():
+                self._system_prompt = system_prompt_path.read_text(encoding='utf-8').strip()
+                self._user_template = user_template_path.read_text(encoding='utf-8').strip()
+                debug_data("InterpreterAgent", "PROMPT TEMPLATES", "Loaded from template files")
+            else:
+                # Fallback to hardcoded prompts
+                self._system_prompt = None
+                self._user_template = None
+                debug_data("InterpreterAgent", "PROMPT TEMPLATES", "Using hardcoded prompts (template files not found)")
+        except Exception as e:
+            # Fallback to hardcoded prompts on any error
+            self._system_prompt = None
+            self._user_template = None
+            debug_data("InterpreterAgent", "PROMPT TEMPLATES ERROR", str(e))
     
     def _calculate_baseline(self):
         """Calculate baseline scenario for comparison"""
@@ -84,16 +114,51 @@ class InterpreterAgent:
                     examples_text += f"Baseline: EUR {ex.get('baseline', 0):.2f}\n"
                 examples_text += f"Interpretation: {ex.get('interpretation', '')}\n\n"
         
-        prompt = f"""You are an energy system analyst. Interpret the following optimization results:
+        # Prepare template variables
+        baseline_info = f"Baseline Cost: EUR {baseline_obj:.2f}" if baseline_obj is not None else ""
+        cost_change_info = f"Cost Change: EUR {change:.2f} ({change_pct:+.1f}%)" if change is not None else ""
+        
+        # Get data values (handle numpy arrays)
+        pv_profile = data.get('PV', [])
+        if isinstance(pv_profile, np.ndarray):
+            pv_profile = pv_profile.tolist()
+        
+        load_profile = data.get('Load', [])
+        if isinstance(load_profile, np.ndarray):
+            load_profile = load_profile.tolist()
+        
+        # Use template files if available, otherwise use hardcoded prompt
+        if self._system_prompt and self._user_template:
+            # Load from template files
+            # Format objective value for template
+            objective_str = f"{objective:.2f}"
+            user_prompt = self._user_template.format(
+                examples_text=examples_text if examples_text else "",
+                modifications=modifications,
+                status=status,
+                objective=objective_str,
+                baseline_info=baseline_info,
+                cost_change_info=cost_change_info,
+                pv_profile=pv_profile,
+                load_profile=load_profile,
+                battery_capacity_kwh=data.get('battery_capacity_kwh', 0),
+                price_import=data.get('price_import', 0),
+                price_export=data.get('price_export', 0)
+            )
+            # Combine system and user prompts
+            prompt = f"{self._system_prompt}\n\n{user_prompt}"
+        else:
+            # Fallback to hardcoded prompt
+            prompt = f"""You are an energy system analyst. Interpret the following optimization results:
 
 {examples_text if examples_text else ""}Scenario: {modifications}
 Optimization Status: {status}
 Total Cost: EUR {objective:.2f}
-{f"Baseline Cost: EUR {baseline_obj:.2f}" if baseline_obj is not None else ""}
-{f"Cost Change: EUR {change:.2f} ({change_pct:+.1f}%)" if change is not None else ""}
+{baseline_info}
+{cost_change_info}
 
-PV Generation Profile: {data.get('PV', [])}
-Load Profile: {data.get('Load', [])}
+PV Generation Profile: {pv_profile}
+Load Profile: {load_profile}
 Battery Capacity: {data.get('battery_capacity_kwh', 0)} kWh
 Import Price: EUR {data.get('price_import', 0)}/kWh
 Export Price: EUR {data.get('price_export', 0)}/kWh

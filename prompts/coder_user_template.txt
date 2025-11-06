@@ -1,0 +1,10 @@
+Examples:
+{examples_text}
+
+Question: {question}
+
+Extract the modifications as a JSON array of operations. Return only the JSON array, no other text.
+
+Example output format:
+[{"op": "scale_series", "target": "PV", "scale_pct": 20}]
+
